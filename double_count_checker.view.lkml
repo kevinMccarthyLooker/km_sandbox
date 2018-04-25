@@ -3,7 +3,7 @@ view: double_count_checker {
     sql:
     SELECT
     users.id as users_id,
-    COUNT(*) AS users_id_count,
+    COUNT(*) AS users_id_count
     FROM public.order_items  AS order_items
     LEFT JOIN public.users  AS users ON users.id=order_items.user_id
     group by users.id
