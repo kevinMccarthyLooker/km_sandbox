@@ -10,6 +10,15 @@ view: users {
   dimension: age {
     type: number
     sql: ${TABLE}.age ;;
+    link: {
+      url: "https://profservices.dev.looker.com/dashboards/31"
+      label: "https://profservices.dev.looker.com/dashboards/31"
+    }
+    link: {
+      url: "/dashboards/31"
+      label: "/dashboards/31"
+    }
+
   }
 
   dimension: city {

@@ -13,15 +13,15 @@ datagroup: km_sandbox_default_datagroup {
 
 persist_with: km_sandbox_default_datagroup
 
-explore: order_items_symm_aggs {
-  view_name: order_items
-  join: users {
-    type: left_outer
-    sql_on: ${order_items.user_id} = ${users.id} ;;
-    relationship: many_to_one
-  }
-}
-
+# explore: order_items_symm_aggs {
+#   view_name: order_items
+#   join: users {
+#     type: left_outer
+#     sql_on: ${order_items.user_id} = ${users.id} ;;
+#     relationship: many_to_one
+#   }
+# }
+explore: order_items_dynamic_labels_testing {}
 
 explore: order_items {
   join: users {
