@@ -106,3 +106,6 @@ connection: "thelook_events_redshift"
 # #   dimension: count {type: number}
 #   measure: age_corrected {type:number sql:sum(${users.age}/(1.0*${users_id_count}));;value_format_name:decimal_0}
 # }
+
+include:"create_users_data.view.lkml"
+explore: create_users_data {}
