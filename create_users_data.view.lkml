@@ -1,9 +1,9 @@
 view: create_users_data {
   derived_table: {
     sql:
-    select 'kevin.mccarthy11@looker.com' as Email,'111' as CouncilCode, 'Enabled' as Account,'SU602' as "Service Unit Name",'SU Roster' as Roles
+    select 'kevin.mccarthy+1@looker.com' as Email,'111' as CouncilCode, 'Enabled' as Account,'SU602' as "Service Unit Name",'SU Roster' as Roles
     union all
-    select 'kevin.mccarthy22@looker.com' as Email,'113' as CouncilCode, 'Enabled' as Account,'SU602' as "Service Unit",'SU Roster,Admin' as Roles
+    select 'kevin.mccarthy+2@looker.com' as Email,'113' as CouncilCode, 'Enabled' as Account,'SU602' as "Service Unit",'SU Roster,Admin' as Roles
 
     ;;
 # Email CouncilCode Account Service Unit Name Roles
