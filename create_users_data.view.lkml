@@ -4,7 +4,8 @@ view: create_users_data {
     select 'kevin.mccarthy+1@looker.com' as Email,'111' as CouncilCode, 'Enabled' as Account,'SU602' as "Service Unit Name",'SU Roster' as Roles
     union all
     select 'kevin.mccarthy+2@looker.com' as Email,'113' as CouncilCode, 'Enabled' as Account,'SU602' as "Service Unit",'SU Roster,Admin' as Roles
-
+    union all
+    select 'kevin.mccarthy+3@looker.com' as Email,'113' as CouncilCode, 'Enabled' as Account,'SU602' as "Service Unit",'SU Roster,Admin' as Roles
     ;;
 # Email CouncilCode Account Service Unit Name Roles
 # kevin.mccarthy.999@gmail.com  116 Enabled SU602, SU603  SU Roster,Admin
