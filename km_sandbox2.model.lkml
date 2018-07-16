@@ -108,4 +108,16 @@ connection: "thelook_events_redshift"
 # }
 
 include:"create_users_data.view.lkml"
+
 explore: create_users_data {}
+include: "order_items.view"
+include: "users.view"
+explore: order_items2 {
+  view_name: order_items
+  always_join: [users]
+  join: users {
+    sql_on: ${order_items.user_id}=${users.id} ;;
+    relationship: many_to_one
+  }
+  sql_always_where: ${users.last_name}='q' ;;
+}
