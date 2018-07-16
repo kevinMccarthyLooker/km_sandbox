@@ -119,5 +119,5 @@ explore: order_items2 {
     sql_on: ${order_items.user_id}=${users.id} ;;
     relationship: many_to_one
   }
-  sql_always_where: ${users.last_name}='q' ;;
+
 }
