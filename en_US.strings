@@ -5,7 +5,7 @@
 //
 // Define your translated strings one line at a time like so:
 
-"Order" = "Order... in French";
+"Order" = "Order";
 
 // "My Other Key" = "My Other Translation";
 //
