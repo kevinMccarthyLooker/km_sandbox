@@ -4,7 +4,9 @@
 // There is one .strings file per locale.
 //
 // Define your translated strings one line at a time like so:
+
 "Order" = "Order... in French";
+
 // "My Other Key" = "My Other Translation";
 //
 // Keys can be any string; choose whatever scheme helps you stay organized.
