@@ -106,7 +106,7 @@ connection: "thelook_events_redshift"
 # #   dimension: count {type: number}
 #   measure: age_corrected {type:number sql:sum(${users.age}/(1.0*${users_id_count}));;value_format_name:decimal_0}
 # }
-
+include: "functions.*"
 include:"create_users_data.view.lkml"
 
 explore: create_users_data {}
@@ -114,10 +114,29 @@ include: "order_items.view"
 include: "users.view"
 explore: order_items2 {
   view_name: order_items
+  join: functions               {fields:[]                    sql:;;relationship:one_to_one}
   always_join: [users]
   join: users {
     sql_on: ${order_items.user_id}=${users.id} ;;
     relationship: many_to_one
   }
 
+}
+include: "summary_measures.view"
+include: "variables_and_templates.view"
+# explore: users_summary_measures {
+#   join: variables_and_templates {sql:;;relationship:one_to_one}
+#
+# }
+
+explore: users {
+  join: variables_and_templates {                        sql:;;relationship:one_to_one}
+  join: demo_summary_measures   {from:summary_measures   sql:;;relationship:one_to_one fields:[gender_summary,age_summary,full_name_summary]}
+  join: city_summary_measures   {from:summary_measures   sql:;;relationship:one_to_one fields:[city_summary]}
+  join: functions               {fields:[function_add,safe_divide]                    sql:;;relationship:one_to_one}
+}
+
+
+explore: functions {
+  join: function_use {sql:;; relationship:one_to_one}
 }

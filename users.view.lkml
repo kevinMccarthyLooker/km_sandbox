@@ -1,3 +1,4 @@
+include: "functions.*"
 view: users {
   sql_table_name: public.users ;;
 
@@ -56,14 +57,18 @@ view: users {
     sql: ${TABLE}.first_name ;;
   }
 
-  dimension: gender {
-    type: string
-    sql: ${TABLE}.gender ;;
-  }
-
   dimension: last_name {
     type: string
     sql: ${TABLE}.last_name ;;
+  }
+
+  dimension: full_name {
+    type: string
+    sql: ${first_name}||' - '||${last_name} ;;
+  }
+  dimension: gender {
+    type: string
+    sql: ${TABLE}.gender ;;
   }
 
   dimension: latitude {
@@ -101,5 +106,47 @@ view: users {
     sql: ${age} ;;
   }
 
+
+
+    #testing html inheritance
+dimension: html_sql {
+  type: string
+  sql: '<a href="#drillmenu" target="_self">
+    {% if 'GBP' contains 'GBP' %}
+    <font>&#163;rendered_value</font>
+    {% else %}
+    <font>&#8364;rendered_value</font>
+    {% endif %}
+    </a>' ;;
+}
+
+  dimension: state2 {
+    type: string
+    sql: ${state} ;;
+#     html: test ;;
+    html:
+    <a href="#drillmenu" target="_self">
+    {% if 'GBP' contains 'GBP' %}
+    <font>&#163;{{ rendered_value }}</font>
+    {% else %}
+    <font>&#8364;{{ rendered_value }}</font>
+    {% endif %}
+    </a>;;
+  }
+  dimension: state3 {
+    type: string
+    sql: '1' ;;
+    html: {{ html_sql._sql | replace: "<a h","" }};;
+  }
+
+  #breaks down because you ._sql renders with curly brakets if/when the underlying fied has them
+#   measure: avg_age {
+#     type: number
+#     sql: {{ functions.safe_divide._sql | replace: 'Replace_Parameter_1',age._sql | replace: 'Replace_Parameter_2',coun(id._sql) }} ;;
+# #       sql: {{ functions.function_add._sql | replace:'Replace_Parameter_1','4' | replace:'Replace_Parameter_2','5'}} ;;
+# #     sql: {{ functions.safe_divide._sql }};;
+# #     sql: {{ functions.function_add._sql | replace:'Replace_Parameter_1','4' | replace:'Replace_Parameter_2','5'}} ;;
+# # sql: {{ functions.function_add._sql }} ;;
+#   }
 
 }
