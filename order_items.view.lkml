@@ -152,7 +152,7 @@ view: order_items {
   }
 
   dimension: order_id {
-    label: Order
+    label: "order_label_localized"
     type: number
     sql: ${TABLE}.order_id ;;
   }
