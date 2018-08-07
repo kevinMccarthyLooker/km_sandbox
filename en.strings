@@ -5,7 +5,7 @@
 //
 // Define your translated strings one line at a time like so:
 
-"Order" = "Order";
+"order_label_localized" = "Order";
 
 // "My Other Key" = "My Other Translation";
 //
