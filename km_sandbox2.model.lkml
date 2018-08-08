@@ -1,4 +1,10 @@
 connection: "thelook_events_redshift"
+
+include: "user_creation_support.view.lkml"
+include: "user_creation_support2.view.lkml"
+explore: user_creation_support2 {}
+
+
 #
 # # include all the views
 # include: "*.view"
