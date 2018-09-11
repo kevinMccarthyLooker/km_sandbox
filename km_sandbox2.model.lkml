@@ -4,6 +4,8 @@ include: "user_creation_support.view.lkml"
 include: "user_creation_support2.view.lkml"
 explore: user_creation_support2 {}
 
+include: "trank.view.lkml"
+explore: trank {}
 
 #
 # # include all the views

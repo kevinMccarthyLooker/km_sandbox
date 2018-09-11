@@ -21,6 +21,7 @@ view: users {
     }
 
   }
+  #testing
 
   dimension: city {
     type: string
@@ -42,9 +43,11 @@ view: users {
       week,
       month,
       quarter,
-      year
+      year,
+      week_of_year
     ]
     sql: ${TABLE}.created_at ;;
+#     convert_tz: no
   }
 
   dimension: email {
@@ -99,6 +102,12 @@ view: users {
   measure: count {
     type: count
     drill_fields: [id, first_name, last_name, events.count, order_items.count]
+  }
+
+  measure: count2 {
+    type: number
+    drill_fields: [id, first_name, last_name, events.count, order_items.count]
+    sql: power(sum(1),3) ;;
   }
 
   measure: total_age {
