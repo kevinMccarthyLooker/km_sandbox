@@ -110,6 +110,36 @@ view: users {
 #     sql: power(sum(1),3) ;;
 #   }
 
+  parameter: week_of_year_parameter {
+    type: number
+  }
+
+  dimension: satisfies_parameter {
+    type: yesno
+#     sql: ${created_week_of_year}<={% parameter week_of_year_parameter %} ;;
+  }
+  measure: count__filtered_on_week{
+    type: number
+#     filters: {field:satisfies_parameter value:"Yes"}
+    sql:
+    case when max(${created_week_of_year})<= {% parameter week_of_year_parameter %} then
+    sum(count(case when ${created_week_of_year}<={% parameter week_of_year_parameter %} then 1 else null end)) over (
+    PARTITION BY ${first_name}
+    order by ${created_week} ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
+    else null end
+    ;;
+  }
+
+  measure: t2 {
+    type: number
+    sql: sum(1) over (rows between unbounded preceding and current row) ;;
+  }
+
+  measure: t {
+    type: running_total
+    sql: ${count__filtered_on_week} ;;
+  }
+
   measure: total_age {
     type: sum
     sql: ${age} ;;
@@ -117,7 +147,13 @@ view: users {
 
   measure: running_count {
     type: running_total
+    direction: "column"
     sql: ${count} ;;
+  }
+
+  measure: running_count_mod {
+    type: number
+    sql: case when ${count} is not null then ${running_count} else null end ;;
   }
 
     #testing html inheritance
