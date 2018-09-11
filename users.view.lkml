@@ -104,18 +104,21 @@ view: users {
     drill_fields: [id, first_name, last_name, events.count, order_items.count]
   }
 
-  measure: count2 {
-    type: number
-    drill_fields: [id, first_name, last_name, events.count, order_items.count]
-    sql: power(sum(1),3) ;;
-  }
+#   measure: count2 {
+#     type: number
+#     drill_fields: [id, first_name, last_name, events.count, order_items.count]
+#     sql: power(sum(1),3) ;;
+#   }
 
   measure: total_age {
     type: sum
     sql: ${age} ;;
   }
 
-
+  measure: running_count {
+    type: running_total
+    sql: ${count} ;;
+  }
 
     #testing html inheritance
 dimension: html_sql {

@@ -1,4 +1,5 @@
-connection: "looker"
+# connection: "looker"
+connection: "thelook_events_redshift"
 
 label: "ilooker"
 
