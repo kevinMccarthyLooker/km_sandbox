@@ -83,6 +83,12 @@ view: users {
     type: number
     sql: ${TABLE}.longitude ;;
   }
+#
+  dimension: location {
+    type: location
+    sql_latitude: round(${latitude},6) ;;
+    sql_longitude: round(${longitude},6) ;;
+  }
 
   dimension: state {
     type: string
@@ -134,22 +140,37 @@ view: users {
 #     ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
 #     else null end
 #     ;;
-    sql:
-    case when
-    sum(count(case when ${created_week_of_year}<={% parameter week_of_year_parameter %} then 1 else null end)) over (
-    {% if first_name._is_selected %}PARTITION BY ${first_name}{% endif %}
-    {% if state._is_selected %}PARTITION BY ${state}{% endif %}
-    order by ${state}
-    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
-    >0
-    then
-    sum(count(case when ${created_week_of_year}<={% parameter week_of_year_parameter %} then 1 else null end)) over (
-    {% if first_name._is_selected %}PARTITION BY ${first_name}{% endif %}
-    {% if state._is_selected %}PARTITION BY ${state}{% endif %}
-    order by ${state}
-    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
-    else null end
-    ;;
+
+# for running total with week showing
+#     sql:
+#     case when
+#     sum(count(case when ${created_week_of_year}<={% parameter week_of_year_parameter %} then 1 else null end)) over (
+#     {% if first_name._is_selected %}PARTITION BY ${first_name}{% endif %}
+#     {% if state._is_selected %}PARTITION BY ${state}{% endif %}
+#     {% if location._is_selected %}PARTITION BY ${location}{% endif %}
+#
+#     {% if state._is_selected %}order by ${state}{% endif %}
+#     {% if location._is_selected %}order by ${location}{% endif %}
+#     ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
+#     >0
+#     then
+#     sum(count(case when ${created_week_of_year}<={% parameter week_of_year_parameter %} then 1 else null end)) over (
+#     {% if first_name._is_selected %}PARTITION BY ${first_name}{% endif %}
+#     {% if state._is_selected %}PARTITION BY ${state}{% endif %}
+#     {% if location._is_selected %}PARTITION BY ${location}{% endif %}
+#
+#     order by
+#     {% if state._is_selected %}order by ${state}{% endif %}
+#     {% if location._is_selected %}order by ${location}{% endif %}
+#     ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+#     )
+#     else null end
+#     ;;
+sql:
+
+count(case when ${created_week_of_year}<={% parameter week_of_year_parameter %} then 1 else null end)
+
+;;
   }
 
   measure: t2 {
