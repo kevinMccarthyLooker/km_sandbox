@@ -87,6 +87,8 @@ view: users {
   dimension: state {
     type: string
     sql: ${TABLE}.state ;;
+    map_layer_name: us_states
+#     map_layer_name: us_states # doesn't match to our map layer keys?
   }
 
   dimension: traffic_source {
@@ -97,6 +99,7 @@ view: users {
   dimension: zip {
     type: zipcode
     sql: ${TABLE}.zip ;;
+    map_layer_name: us_zipcode_tabulation_areas
   }
 
   measure: count {
@@ -121,11 +124,30 @@ view: users {
   measure: count__filtered_on_week{
     type: number
 #     filters: {field:satisfies_parameter value:"Yes"}
+#     sql:
+#     case when max(${created_week_of_year})<= {% parameter week_of_year_parameter %} then
+#     sum(count(case when ${created_week_of_year}<={% parameter week_of_year_parameter %} then 1 else null end)) over (
+#     {% if first_name._is_selected %}PARTITION BY ${first_name}{% endif %}
+#     {% if state._is_selected %}PARTITION BY ${state}{% endif %}
+#     /*order by ${created_week}*/
+#     order by ${state}
+#     ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
+#     else null end
+#     ;;
     sql:
-    case when max(${created_week_of_year})<= {% parameter week_of_year_parameter %} then
+    case when
     sum(count(case when ${created_week_of_year}<={% parameter week_of_year_parameter %} then 1 else null end)) over (
-    PARTITION BY ${first_name}
-    order by ${created_week} ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
+    {% if first_name._is_selected %}PARTITION BY ${first_name}{% endif %}
+    {% if state._is_selected %}PARTITION BY ${state}{% endif %}
+    order by ${state}
+    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
+    >0
+    then
+    sum(count(case when ${created_week_of_year}<={% parameter week_of_year_parameter %} then 1 else null end)) over (
+    {% if first_name._is_selected %}PARTITION BY ${first_name}{% endif %}
+    {% if state._is_selected %}PARTITION BY ${state}{% endif %}
+    order by ${state}
+    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
     else null end
     ;;
   }
