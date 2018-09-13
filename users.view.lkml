@@ -76,19 +76,23 @@ view: users {
 
   dimension: latitude {
     type: number
-    sql: ${TABLE}.latitude ;;
+    sql: floor(${TABLE}.latitude*100)/100+0.00000000000001 ;;
+#     sql: ${TABLE}.latitude ;;
   }
-
+#40.72245315260115,-74.01622844950676 ...
   dimension: longitude {
     type: number
-    sql: ${TABLE}.longitude ;;
+    sql: floor(${TABLE}.longitude*100)/100+0.00000000000001 ;;
+#     sql: ${TABLE}.longitude ;;
   }
 #
   dimension: location {
     type: location
-    sql_latitude: floor(${latitude}*150)/150 ;;
-    sql_longitude: floor(${longitude}*150)/150 ;;
+    sql_latitude: ${latitude} ;;
+    sql_longitude: ${longitude};;
   }
+
+
 
   dimension: state {
     type: string
@@ -125,7 +129,7 @@ view: users {
 
   dimension: satisfies_parameter {
     type: yesno
-#     sql: ${created_week_of_year}<={% parameter week_of_year_parameter %} ;;
+    sql: ${created_week_of_year}<={% parameter week_of_year_parameter %} ;;
   }
   measure: count__filtered_on_week{
     type: number
@@ -173,14 +177,37 @@ count(case when ${created_week_of_year}<={% parameter week_of_year_parameter %} 
 ;;
   }
 
+
   measure: revenue__filtered_on_week{
+    description: "modified to support map radius"
     type: number
-    sql:
-
-    sum(case when ${created_week_of_year}<={% parameter week_of_year_parameter %} then ${order_items.sale_price} else null end)
-
+    sql:sum(case when ${created_week_of_year}<={% parameter week_of_year_parameter %} then ${order_items.sale_price} else null end)
+    /20
     ;;
   }
+
+  measure: revenue__filtered_on_week_female{
+    description: "modified to support map radius"
+    type: sum
+    filters: {field:satisfies_parameter value:"Yes"}
+    filters: {field:gender value:"Female"}
+    sql:${order_items.sale_price}
+          /20
+          ;;
+          sql_distinct_key: ${order_items.id} ;;
+  }
+  measure: revenue__filtered_on_week_male{
+    description: "modified to support map radius"
+    type: sum
+    filters: {field:satisfies_parameter value:"Yes"}
+    filters: {field:gender value:"Male"}
+
+    sql:${order_items.sale_price}
+          /20
+          ;;
+    sql_distinct_key: ${order_items.id} ;;
+  }
+
 
   measure: t2 {
     type: number
