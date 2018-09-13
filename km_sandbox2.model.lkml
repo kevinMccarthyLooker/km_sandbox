@@ -139,10 +139,11 @@ include: "variables_and_templates.view"
 # }
 
 explore: users {
-  join: variables_and_templates {                        sql:;;relationship:one_to_one}
-  join: demo_summary_measures   {from:summary_measures   sql:;;relationship:one_to_one fields:[gender_summary,age_summary,full_name_summary]}
-  join: city_summary_measures   {from:summary_measures   sql:;;relationship:one_to_one fields:[city_summary]}
+  join: variables_and_templates {                                                     sql:;;relationship:one_to_one}
+  join: demo_summary_measures   {from:summary_measures                                sql:;;relationship:one_to_one fields:[gender_summary,age_summary,full_name_summary]}
+  join: city_summary_measures   {from:summary_measures                                sql:;;relationship:one_to_one fields:[city_summary]}
   join: functions               {fields:[function_add,safe_divide]                    sql:;;relationship:one_to_one}
+  join: order_items             {relationship:one_to_many           type:left_outer   sql_on: ${order_items.user_id}=${users.id} ;;}
 }
 
 

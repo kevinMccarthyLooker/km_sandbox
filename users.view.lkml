@@ -86,8 +86,8 @@ view: users {
 #
   dimension: location {
     type: location
-    sql_latitude: round(${latitude},6) ;;
-    sql_longitude: round(${longitude},6) ;;
+    sql_latitude: floor(${latitude}*150)/150 ;;
+    sql_longitude: floor(${longitude}*150)/150 ;;
   }
 
   dimension: state {
@@ -171,6 +171,15 @@ sql:
 count(case when ${created_week_of_year}<={% parameter week_of_year_parameter %} then 1 else null end)
 
 ;;
+  }
+
+  measure: revenue__filtered_on_week{
+    type: number
+    sql:
+
+    sum(case when ${created_week_of_year}<={% parameter week_of_year_parameter %} then ${order_items.sale_price} else null end)
+
+    ;;
   }
 
   measure: t2 {
