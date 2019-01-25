@@ -224,6 +224,7 @@ view: order_items {
   measure: revenue {
     type: sum
     sql: ${sale_price} ;;
+    drill_fields: [revenue]
   }
 
   # ----- Sets of fields for drilling ------
@@ -237,4 +238,211 @@ view: order_items {
       inventory_items.product_name
     ]
   }
+
+  #link building... for better drilling
+  measure: dummy_link_holder {
+    type: sum
+    sql: 0 ;;
+    drill_fields: [revenue]
+  }
+
+  measure: link_text {
+    type: number
+    sql: count(*) ;;
+#     html: {{created_month._linked_value}} | {{created_month._link}} ;;
+    html: {{dummy_link_holder._linked_value}} | {{dummy_link_holder._link}} ;;
+  }
+
+  measure: link_text_modified {
+    type: number
+    sql: count(*) ;;
+#     html:
+#     {% assign orig_link = dummy_link_holder._link %}
+#     {% assign left_portion__to_fields = orig_link | split: 'fields=' | first %}
+#     {% assign right_portion__from_fields = orig_link | split: 'fields=' | last %}
+#
+#     {% assign field_list = 'fields=' %}
+#     {% assign sort_list = '&sorts=' %}
+#     {% if created_month_name._is_selected %}
+#         {% assign field_list = field_list | append: created_date_day_of_year._name | append: ',' %}
+#         {% assign sort_list = sort_list | append: created_date_day_of_year._name | append: ',' %}
+#     {% endif %}
+#     {% assign field_list = field_list | append: created_date_day_of_year._name | append: ',' | append: created_year._name | append: ',' %}
+#
+#     {% assign pivot_url_portion = '&pivots=order_items.created_year' %}
+#
+#     {% comment %}remove year filter {% endcomment %}
+#
+#
+#     {% assign final_link = 'https://profservices.dev.looker.com' | append: left_portion__to_fields | append: field_list | append: right_portion__from_fields | append: sort_list | append: pivot_url_portion %}
+#     {% assign part1 = final_link | split: 'f[order_items.created_year]=' | first %}
+#     {% assign part2 = final_link | split: 'f[order_items.created_year]=' | last %}
+#
+#     {% assign parts_after_created_year_filter_value = part2 | split: 'f[' | last %}
+#     {% assign final_link2 = part1 | append: "f[" | append: parts_after_created_year_filter_value %}
+#     <a href="{{final_link2}}">{{value}}<a>
+#
+#     ;;
+
+
+
+    link: {
+      url: "
+    {% assign orig_link = dummy_link_holder._link %}
+    {% assign field_to_drill_into = created_date_week_of_year._name %}
+    {% assign period_to_compare__field_to_pivot_on = created_year._name %}
+
+{% comment %}insert the desired dimension to display in the drill and sort on that field...{% endcomment %}
+{% assign left_portion__to_fields = orig_link | split: 'fields=' | first %}
+{% assign right_portion__from_fields = orig_link | split: 'fields=' | last %}
+
+{% assign field_list = 'fields=' %}
+{% assign sort_list = '&sorts=' %}
+  {% comment %}could be dynamic based on which fields are included...like: if created_month_name._is_selected{% endcomment %}
+  {% assign field_list = field_list | append: field_to_drill_into | append: ',' %}
+  {% assign sort_list = sort_list | append: field_to_drill_into | append: ',' %}
+    {% assign field_list = field_list | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on | append: ',' %}
+
+    {% assign pivot_url_portion = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
+
+    {% comment %}remove year filter {% endcomment %}
+
+
+    {% assign final_link = 'https://profservices.dev.looker.com' | append: left_portion__to_fields | append: field_list | append: right_portion__from_fields | append: sort_list | append: pivot_url_portion %}
+    {% assign split_string__pivot_field_filter_start = 'f[' | append: period_to_compare__field_to_pivot_on | append: ']=' %}
+    {% assign part1 = final_link | split: split_string__pivot_field_filter_start | first %}
+    {% assign part2 = final_link | split: split_string__pivot_field_filter_start | last %}
+
+    {% assign parts_after_created_year_filter_value = part2 | split: 'f[' | last %}
+    {% assign vis_config = '&vis=%7B%22type%22%3A%22looker_line%22%2C%22series_types%22%3A%7B%7D%7D' %}
+    {% assign final_link2 = part1 | append: 'f[' | append: parts_after_created_year_filter_value | append: vis_config %}
+
+    {{final_link2}}
+      "
+label:
+"
+    {% assign field_to_drill_into = created_date_week_of_year._name %}
+    {% assign period_to_compare__field_to_pivot_on = created_year._name %}
+    compare {{period_to_compare__field_to_pivot_on}}s, by {{field_to_drill_into}}
+    "
+    }
+
+    link: {
+      url: "
+      {% assign orig_link = dummy_link_holder._link %}
+      {% assign field_to_drill_into = created_date_day_of_year._name %}
+      {% assign period_to_compare__field_to_pivot_on = created_year._name %}
+
+      {% comment %}insert the desired dimension to display in the drill and sort on that field...{% endcomment %}
+      {% assign left_portion__to_fields = orig_link | split: 'fields=' | first %}
+      {% assign right_portion__from_fields = orig_link | split: 'fields=' | last %}
+
+      {% assign field_list = 'fields=' %}
+      {% assign sort_list = '&sorts=' %}
+      {% comment %}could be dynamic based on which fields are included...like: if created_month_name._is_selected{% endcomment %}
+      {% assign field_list = field_list | append: field_to_drill_into | append: ',' %}
+      {% assign sort_list = sort_list | append: field_to_drill_into | append: ',' %}
+      {% assign field_list = field_list | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on | append: ',' %}
+
+      {% assign pivot_url_portion = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
+
+      {% comment %}remove year filter {% endcomment %}
+
+
+      {% assign final_link = 'https://profservices.dev.looker.com' | append: left_portion__to_fields | append: field_list | append: right_portion__from_fields | append: sort_list | append: pivot_url_portion %}
+      {% assign split_string__pivot_field_filter_start = 'f[' | append: period_to_compare__field_to_pivot_on | append: ']=' %}
+      {% assign part1 = final_link | split: split_string__pivot_field_filter_start | first %}
+      {% assign part2 = final_link | split: split_string__pivot_field_filter_start | last %}
+
+      {% assign parts_after_created_year_filter_value = part2 | split: 'f[' | last %}
+      {% assign vis_config = '&vis=%7B%22type%22%3A%22looker_line%22%2C%22series_types%22%3A%7B%7D%7D' %}
+      {% assign final_link2 = part1 | append: 'f[' | append: parts_after_created_year_filter_value | append: vis_config %}
+
+      {{final_link2}}
+      "
+      label:
+      "
+      {% assign field_to_drill_into = created_date_day_of_year._name %}
+      {% assign period_to_compare__field_to_pivot_on = created_year._name %}
+      compare {{period_to_compare__field_to_pivot_on}}s, by {{field_to_drill_into}}
+      "
+    }
+
+    link: {#by quarter of year
+      url: "
+      {% assign orig_link = dummy_link_holder._link %}
+      {% assign field_to_drill_into = created_date_day_of_year._name %}
+      {% assign period_to_compare__field_to_pivot_on = created_date_quarter_of_year._name %}
+
+      {% comment %}insert the desired dimension to display in the drill and sort on that field...{% endcomment %}
+      {% assign left_portion__to_fields = orig_link | split: 'fields=' | first %}
+      {% assign right_portion__from_fields = orig_link | split: 'fields=' | last %}
+
+      {% assign field_list = 'fields=' %}
+      {% assign sort_list = '&sorts=' %}
+      {% comment %}could be dynamic based on which fields are included...like: if created_month_name._is_selected{% endcomment %}
+      {% assign field_list = field_list | append: field_to_drill_into | append: ',' %}
+      {% assign sort_list = sort_list | append: field_to_drill_into | append: ',' %}
+      {% assign field_list = field_list | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on | append: ',' %}
+
+      {% assign pivot_url_portion = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
+
+      {% comment %}remove year filter {% endcomment %}
+      {% assign final_link = 'https://profservices.dev.looker.com' | append: left_portion__to_fields | append: field_list | append: right_portion__from_fields | append: sort_list | append: pivot_url_portion %}
+      {% assign split_string__pivot_field_filter_start = 'f[' | append: period_to_compare__field_to_pivot_on | append: ']=' %}
+      {% assign part1 = final_link | split: split_string__pivot_field_filter_start | first %}
+      {% assign part2 = final_link | split: split_string__pivot_field_filter_start | last %}
+
+      {% assign parts_after_created_year_filter_value = part2 | split: 'f[' | last %}
+      {% assign vis_config = '&vis=%7B%22type%22%3A%22looker_line%22%2C%22series_types%22%3A%7B%7D%7D' %}
+      {% assign final_link2 = part1 | append: 'f[' | append: parts_after_created_year_filter_value | append: vis_config %}
+
+      {{final_link2}}
+      "
+      label:#create a label that says what is being filtered on.
+      "
+      {% assign orig_link = dummy_link_holder._link %}
+      {% assign field_to_drill_into = created_date_day_of_year._name %}
+      {% assign period_to_compare__field_to_pivot_on = created_date_quarter_of_year._name %}
+
+      {% assign left_portion__to_filters = orig_link | split: '&f[' | first %}
+      {% assign right_portion__from_filters = orig_link | split: left_portion__to_filters | last %}
+      {% assign filters = right_portion__from_filters | split: '&sorts=' | first | split: '&query_timezone' | first | split: '&limit' | first %}
+
+      {% assign formatted_filters = filters | replace: '&f[','-' | replace: ']','' %}
+      compare {{period_to_compare__field_to_pivot_on}}s, by {{field_to_drill_into}}, filter on {{formatted_filters}}
+      "
+    }
+  }
+  dimension: created_date_quarter_of_year {
+    type: date_quarter_of_year
+    sql: ${created_raw} ;;
+  }
+  dimension: created_date_week_of_year {
+    type: date_week_of_year
+    sql: ${created_raw} ;;
+  }
+  dimension: created_date_day_of_year {
+    type: date_day_of_year
+    sql:  ${created_raw};;
+  }
+  dimension: created_month_2 {
+    type: date_month
+    sql: ${created_raw} ;;
+    html: {{link_text_modified._linked_value}} ;;
+  }
+  dimension: created_month_num2 {
+    type: date_month_num
+    sql: ${created_raw} ;;
+  }
+  dimension: created_month_name {
+    type: date_month_name
+    sql: ${created_raw} ;;
+    order_by_field: created_month_num2
+#     html: {{link_text_modified._linked_value}} ;;
+  }
+
+
+#   {% assign field_list = orig_link | slice: 2,5 %}
+# fields=
 }
