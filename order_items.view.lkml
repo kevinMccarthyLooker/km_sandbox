@@ -243,7 +243,7 @@ view: order_items {
   measure: dummy_link_holder {
     type: sum
     sql: 0 ;;
-    drill_fields: [revenue]
+    drill_fields: [link_testing2]
   }
 
   measure: link_text {
@@ -253,167 +253,760 @@ view: order_items {
     html: {{dummy_link_holder._linked_value}} | {{dummy_link_holder._link}} ;;
   }
 
-  measure: link_text_modified {
-    type: number
-    sql: count(*) ;;
-#     html:
-#     {% assign orig_link = dummy_link_holder._link %}
-#     {% assign left_portion__to_fields = orig_link | split: 'fields=' | first %}
-#     {% assign right_portion__from_fields = orig_link | split: 'fields=' | last %}
+#   measure: link_text_modified {
+#     type: number
+#     sql: count(*) ;;
+# #     html:
+# #     {% assign orig_link = dummy_link_holder._link %}
+# #     {% assign left_portion__to_fields = orig_link | split: 'fields=' | first %}
+# #     {% assign right_portion__from_fields = orig_link | split: 'fields=' | last %}
+# #
+# #     {% assign field_list = 'fields=' %}
+# #     {% assign sort_list = '&sorts=' %}
+# #     {% if created_month_name._is_selected %}
+# #         {% assign field_list = field_list | append: created_date_day_of_year._name | append: ',' %}
+# #         {% assign sort_list = sort_list | append: created_date_day_of_year._name | append: ',' %}
+# #     {% endif %}
+# #     {% assign field_list = field_list | append: created_date_day_of_year._name | append: ',' | append: created_year._name | append: ',' %}
+# #
+# #     {% assign pivot_url_portion = '&pivots=order_items.created_year' %}
+# #
+# #     {% comment %}remove year filter {% endcomment %}
+# #
+# #
+# #     {% assign final_link = 'https://profservices.dev.looker.com' | append: left_portion__to_fields | append: field_list | append: right_portion__from_fields | append: sort_list | append: pivot_url_portion %}
+# #     {% assign part1 = final_link | split: 'f[order_items.created_year]=' | first %}
+# #     {% assign part2 = final_link | split: 'f[order_items.created_year]=' | last %}
+# #
+# #     {% assign parts_after_created_year_filter_value = part2 | split: 'f[' | last %}
+# #     {% assign final_link2 = part1 | append: "f[" | append: parts_after_created_year_filter_value %}
+# #     <a href="{{final_link2}}">{{value}}<a>
+# #
+# #     ;;
 #
-#     {% assign field_list = 'fields=' %}
-#     {% assign sort_list = '&sorts=' %}
-#     {% if created_month_name._is_selected %}
-#         {% assign field_list = field_list | append: created_date_day_of_year._name | append: ',' %}
-#         {% assign sort_list = sort_list | append: created_date_day_of_year._name | append: ',' %}
+#
+#
+# #     link: {
+# #       url: "
+# #     {% assign orig_link = dummy_link_holder._link %}
+# #     {% assign field_to_drill_into = created_date_week_of_year._name %}
+# #     {% assign period_to_compare__field_to_pivot_on = created_year._name %}
+# #
+# # {% comment %}insert the desired dimension to display in the drill and sort on that field...{% endcomment %}
+# # {% assign left_portion__to_fields = orig_link | split: 'fields=' | first %}
+# # {% assign right_portion__from_fields = orig_link | split: 'fields=' | last %}
+# #
+# # {% assign field_list = 'fields=' %}
+# # {% assign sort_list = '&sorts=' %}
+# #   {% comment %}could be dynamic based on which fields are included...like: if created_month_name._is_selected{% endcomment %}
+# #   {% assign field_list = field_list | append: field_to_drill_into | append: ',' %}
+# #   {% assign sort_list = sort_list | append: field_to_drill_into | append: ',' %}
+# #     {% assign field_list = field_list | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on | append: ',' %}
+# #
+# #     {% assign pivot_url_portion = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
+# #
+# #     {% comment %}remove year filter {% endcomment %}
+# #
+# #
+# #     {% assign final_link = 'https://profservices.dev.looker.com' | append: left_portion__to_fields | append: field_list | append: right_portion__from_fields | append: sort_list | append: pivot_url_portion %}
+# #     {% assign split_string__pivot_field_filter_start = 'f[' | append: period_to_compare__field_to_pivot_on | append: ']=' %}
+# #     {% assign part1 = final_link | split: split_string__pivot_field_filter_start | first %}
+# #     {% assign part2 = final_link | split: split_string__pivot_field_filter_start | last %}
+# #
+# #     {% assign parts_after_created_year_filter_value = part2 | split: 'f[' | last %}
+# #     {% assign vis_config = '&vis=%7B%22type%22%3A%22looker_line%22%2C%22series_types%22%3A%7B%7D%7D' %}
+# #     {% assign final_link2 = part1 | append: 'f[' | append: parts_after_created_year_filter_value | append: vis_config %}
+# #
+# #     {{final_link2}}
+# #       "
+# # label:
+# # "
+# #     {% assign field_to_drill_into = created_date_week_of_year._name %}
+# #     {% assign period_to_compare__field_to_pivot_on = created_year._name %}
+# #     compare {{period_to_compare__field_to_pivot_on}}s, by {{field_to_drill_into}}
+# #     "
+# #     }
+# #
+# #     link: {
+# #       url: "
+# #       {% assign orig_link = dummy_link_holder._link %}
+# #       {% assign field_to_drill_into = created_date_day_of_year._name %}
+# #       {% assign period_to_compare__field_to_pivot_on = created_year._name %}
+# #
+# #       {% comment %}insert the desired dimension to display in the drill and sort on that field...{% endcomment %}
+# #       {% assign left_portion__to_fields = orig_link | split: 'fields=' | first %}
+# #       {% assign right_portion__from_fields = orig_link | split: 'fields=' | last %}
+# #
+# #       {% assign field_list = 'fields=' %}
+# #       {% assign sort_list = '&sorts=' %}
+# #       {% comment %}could be dynamic based on which fields are included...like: if created_month_name._is_selected{% endcomment %}
+# #       {% assign field_list = field_list | append: field_to_drill_into | append: ',' %}
+# #       {% assign sort_list = sort_list | append: field_to_drill_into | append: ',' %}
+# #       {% assign field_list = field_list | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on | append: ',' %}
+# #
+# #       {% assign pivot_url_portion = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
+# #
+# #       {% comment %}remove year filter {% endcomment %}
+# #
+# #
+# #       {% assign final_link = 'https://profservices.dev.looker.com' | append: left_portion__to_fields | append: field_list | append: right_portion__from_fields | append: sort_list | append: pivot_url_portion %}
+# #       {% assign split_string__pivot_field_filter_start = 'f[' | append: period_to_compare__field_to_pivot_on | append: ']=' %}
+# #       {% assign part1 = final_link | split: split_string__pivot_field_filter_start | first %}
+# #       {% assign part2 = final_link | split: split_string__pivot_field_filter_start | last %}
+# #
+# #       {% assign parts_after_created_year_filter_value = part2 | split: 'f[' | last %}
+# #       {% assign vis_config = '&vis=%7B%22type%22%3A%22looker_line%22%2C%22series_types%22%3A%7B%7D%7D' %}
+# #       {% assign final_link2 = part1 | append: 'f[' | append: parts_after_created_year_filter_value | append: vis_config %}
+# #
+# #       {{final_link2}}
+# #       "
+# #       label:
+# #       "
+# #       {% assign field_to_drill_into = created_date_day_of_year._name %}
+# #       {% assign period_to_compare__field_to_pivot_on = created_year._name %}
+# #       compare {{period_to_compare__field_to_pivot_on}}s, by {{field_to_drill_into}}
+# #       "
+# #     }
+# #
+# #     link: {#by quarter of year
+# #       url: "
+# #       {% assign orig_link = dummy_link_holder._link %}
+# #       {% assign field_to_drill_into = created_date_day_of_year._name %}
+# #       {% assign period_to_compare__field_to_pivot_on = created_date_quarter_of_year._name %}
+# #
+# #       {% comment %}insert the desired dimension to display in the drill and sort on that field...{% endcomment %}
+# #       {% assign left_portion__to_fields = orig_link | split: 'fields=' | first %}
+# #       {% assign right_portion__from_fields = orig_link | split: 'fields=' | last %}
+# #
+# #       {% assign field_list = 'fields=' %}
+# #       {% assign sort_list = '&sorts=' %}
+# #       {% comment %}could be dynamic based on which fields are included...like: if created_month_name._is_selected{% endcomment %}
+# #       {% assign field_list = field_list | append: field_to_drill_into | append: ',' %}
+# #       {% assign sort_list = sort_list | append: field_to_drill_into | append: ',' %}
+# #       {% assign field_list = field_list | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on | append: ',' %}
+# #
+# #       {% assign pivot_url_portion = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
+# #
+# #       {% comment %}remove year filter {% endcomment %}
+# #       {% assign final_link = 'https://profservices.dev.looker.com' | append: left_portion__to_fields | append: field_list | append: right_portion__from_fields | append: sort_list | append: pivot_url_portion %}
+# #       {% assign split_string__pivot_field_filter_start = 'f[' | append: period_to_compare__field_to_pivot_on | append: ']=' %}
+# #       {% assign part1 = final_link | split: split_string__pivot_field_filter_start | first %}
+# #       {% assign part2 = final_link | split: split_string__pivot_field_filter_start | last %}
+# #
+# #       {% assign parts_after_created_year_filter_value = part2 | split: 'f[' | last %}
+# #       {% assign vis_config = '&vis=%7B%22type%22%3A%22looker_line%22%2C%22series_types%22%3A%7B%7D%7D' %}
+# #       {% assign final_link2 = part1 | append: 'f[' | append: parts_after_created_year_filter_value | append: vis_config %}
+# #
+# #       {{final_link2}}
+# #       "
+# #       label:#create a label that says what is being filtered on.
+# #       "
+# #       {% assign orig_link = dummy_link_holder._link %}
+# #       {% assign field_to_drill_into = created_date_day_of_year._name %}
+# #       {% assign period_to_compare__field_to_pivot_on = created_date_quarter_of_year._name %}
+# #
+# #       {% assign left_portion__to_filters = orig_link | split: '&f[' | first %}
+# #       {% assign right_portion__from_filters = orig_link | split: left_portion__to_filters | last %}
+# #       {% assign filters = right_portion__from_filters | split: '&sorts=' | first | split: '&query_timezone' | first | split: '&limit' | first %}
+# #
+# #       {% assign formatted_filters = filters | replace: '&f[','-' | replace: ']','' %}
+# #       compare {{period_to_compare__field_to_pivot_on}}s, by {{field_to_drill_into}}, filter on {{formatted_filters}}
+# #       "
+# #     }
+#
+#     link: {label:"All YOY fields below filtered by:
+#       {% assign orig_link = dummy_link_holder._link %}
+#       {% assign field_to_drill_into = created_date_day_of_year._name %}
+#       {% assign period_to_compare__field_to_pivot_on = created_year._name %}
+#
+#       {% assign left_from_filters = orig_link | split: 'f[' | first %}
+#         {% assign right_from_filters = orig_link | remove_first: left_from_filters %}
+#         {% assign filters = right_from_filters | split: '&sorts' | first | split: '&query_timezone' | first  | split: '&limit' | first %}
+#         {% assign filters_to_drill_field = filters | split: period_to_compare__field_to_pivot_on | first %}
+#         {% assign filters_from_drill_field = filters | remove_first: filters_to_drill_field %}
+#         {% assign drill_filter_only = filters_from_drill_field | split: 'f[' | first %}
+#           {% assign after_drill_filter = filters_from_drill_field | remove_first: drill_filter_only %}
+#           {% assign filters_without_drill_field = filters_to_drill_field | append: after_drill_filter | replace: 'f[',' ' | replace: ']',''%}
+#             {{filters_without_drill_field}}"
+#             url:"none"
+#       }
+#
+#     link: {
+# #       label:"YOY by month number"
+#       label:
+#         "
+#       {% assign orig_link = dummy_link_holder._link %}
+#       {% assign field_to_drill_into = created_month_num2._name %}
+#       {% assign period_to_compare__field_to_pivot_on = created_year._name %}
+#
+#       {% comment %}insert the desired dimension to display in the drill and sort on that field...{% endcomment %}
+#       {% assign left_portion__to_fields = orig_link | split: 'fields=' | first %}
+#       {% assign right_portion__from_fields = orig_link | remove_first: left_portion__to_fields %}
+#
+#       {% assign fields_only = right_portion__from_fields | split: '&query_timezone' | first %}
+#       {% assign right_from_fields = right_portion__from_fields | remove_first: fields_only %}
+#       {% assign field_list = 'fields=' %}
+#       {% assign sort_list = '&sorts=' %}
+#       {% comment %}could be dynamic based on which fields are included...like: if created_month_name._is_selected{% endcomment %}
+#       {% assign field_list = field_list | append: field_to_drill_into | append: ',' %}
+#       {% assign sort_list = sort_list | append: field_to_drill_into | append: ',' %}
+#       {% assign field_list = field_list | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on | append: ',' %}
+#
+#       {% assign pivot_url_portion = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
+#
+#       {% comment %}remove year filter {% endcomment %}
+#       {% assign final_link = 'https://profservices.dev.looker.com' | append: left_portion__to_fields | append: field_list | append: right_from_fields | append: sort_list | append: pivot_url_portion %}
+#       {% assign split_string__pivot_field_filter_start = 'f[' | append: period_to_compare__field_to_pivot_on | append: ']=' %}
+#       {% assign part1 = final_link | split: split_string__pivot_field_filter_start | first %}
+#       {% assign part2 = final_link | remove: part1 %}
+#
+#       {% assign pivot_field_part_only = part2 | remove_first: 'f[' | split: 'f[' | first %}
+#
+#       {% assign after_pivot_field_part_only = part2 | remove_first: 'f[' | remove: pivot_field_part_only %}
+#
+#       {% assign vis_config = '&vis=%7B%22type%22%3A%22looker_line%22%2C%22series_types%22%3A%7B%7D%7D' %}
+#       {% assign final_link2 = part1 | append: after_pivot_field_part_only | append: vis_config %}
+#
+#       {{final_link2}}
+#
+#
+#
+#             "
+#       url: "none"
+# #       url: "
+# #       {% assign orig_link = dummy_link_holder._link %}
+# #       {% assign field_to_drill_into = created_month_num2._name %}
+# #       {% assign period_to_compare__field_to_pivot_on = created_year._name %}
+# #
+# #       {% comment %}insert the desired dimension to display in the drill and sort on that field...{% endcomment %}
+# #       {% assign left_portion__to_fields = orig_link | split: 'fields=' | first %}
+# #       {% assign right_portion__from_fields = orig_link | remove_first: left_portion__to_fields %}
+# #
+# #       {% assign right_from_fields = right_portion__from_fields | remove_first: fields_only %}
+# #
+# #       {% assign field_list = 'fields=' %}
+# #       {% assign sort_list = '&sorts=' %}
+# #       {% comment %}could be dynamic based on which fields are included...like: if created_month_name._is_selected{% endcomment %}
+# #       {% assign field_list = field_list | append: field_to_drill_into | append: ',' %}
+# #       {% assign sort_list = sort_list | append: field_to_drill_into | append: ',' %}
+# #       {% assign field_list = field_list | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on | append: ',' %}
+# #
+# #       {% assign pivot_url_portion = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
+# #
+# #       {% comment %}remove year filter {% endcomment %}
+# #       {% assign final_link = 'https://profservices.dev.looker.com' | append: left_portion__to_fields | append: field_list | append: right_from_fields | append: sort_list | append: pivot_url_portion %}
+# #       {% assign split_string__pivot_field_filter_start = 'f[' | append: period_to_compare__field_to_pivot_on | append: ']=' %}
+# #       {% assign part1 = final_link | split: split_string__pivot_field_filter_start | first %}
+# #       {% assign part2 = final_link | remove: part1 %}
+# #
+# #       {% assign pivot_field_part_only = part2 | remove_first: 'f[' | split: 'f[' | first %}
+# #
+# #       {% assign after_pivot_field_part_only = part2 | remove_first: 'f[' | remove: pivot_field_part_only %}
+# #
+# #       {% assign vis_config = '&vis=%7B%22type%22%3A%22looker_line%22%2C%22series_types%22%3A%7B%7D%7D' %}
+# #       {% assign final_link2 = part1 | append: after_pivot_field_part_only | append: vis_config %}
+# #
+# #       {{final_link2}}
+# #       "
+#     }
+# #     link: {label:"YOY by week of year number"
+# #       url: "
+# #       {% assign orig_link = dummy_link_holder._link %}
+# #       {% assign field_to_drill_into = created_date_week_of_year._name %}
+# #       {% assign period_to_compare__field_to_pivot_on = created_year._name %}
+# #
+# #       {% comment %}insert the desired dimension to display in the drill and sort on that field...{% endcomment %}
+# #       {% assign left_portion__to_fields = orig_link | split: 'fields=' | first %}
+# #       {% assign right_portion__from_fields = orig_link | split: 'fields=' | last %}
+# #
+# #       {% assign field_list = 'fields=' %}
+# #       {% assign sort_list = '&sorts=' %}
+# #       {% comment %}could be dynamic based on which fields are included...like: if created_month_name._is_selected{% endcomment %}
+# #       {% assign field_list = field_list | append: field_to_drill_into | append: ',' %}
+# #       {% assign sort_list = sort_list | append: field_to_drill_into | append: ',' %}
+# #       {% assign field_list = field_list | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on | append: ',' %}
+# #
+# #       {% assign pivot_url_portion = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
+# #
+# #       {% comment %}remove year filter {% endcomment %}
+# #       {% assign final_link = 'https://profservices.dev.looker.com' | append: left_portion__to_fields | append: field_list | append: right_portion__from_fields | append: sort_list | append: pivot_url_portion %}
+# #       {% assign split_string__pivot_field_filter_start = 'f[' | append: period_to_compare__field_to_pivot_on | append: ']=' %}
+# #       {% assign part1 = final_link | split: split_string__pivot_field_filter_start | first %}
+# #       {% assign part2 = final_link | split: split_string__pivot_field_filter_start | last %}
+# #
+# #       {% assign parts_after_created_year_filter_value = part2 | split: 'f[' | last %}
+# #       {% assign vis_config = '&vis=%7B%22type%22%3A%22looker_line%22%2C%22series_types%22%3A%7B%7D%7D' %}
+# #       {% assign final_link2 = part1 | append: 'f[' | append: parts_after_created_year_filter_value | append: vis_config %}
+# #
+# #       {{final_link2}}
+# #       "
+# #     }
+# #     link: {label:"YOY by day of year number"
+# #       url: "
+# #       {% assign orig_link = dummy_link_holder._link %}
+# #       {% assign field_to_drill_into = created_date_day_of_year._name %}
+# #       {% assign period_to_compare__field_to_pivot_on = created_year._name %}
+# #
+# #       {% comment %}insert the desired dimension to display in the drill and sort on that field...{% endcomment %}
+# #       {% assign left_portion__to_fields = orig_link | split: 'fields=' | first %}
+# #       {% assign right_portion__from_fields = orig_link | split: 'fields=' | last %}
+# #
+# #       {% assign field_list = 'fields=' %}
+# #       {% assign sort_list = '&sorts=' %}
+# #       {% comment %}could be dynamic based on which fields are included...like: if created_month_name._is_selected{% endcomment %}
+# #       {% assign field_list = field_list | append: field_to_drill_into | append: ',' %}
+# #       {% assign sort_list = sort_list | append: field_to_drill_into | append: ',' %}
+# #       {% assign field_list = field_list | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on | append: ',' %}
+# #
+# #       {% assign pivot_url_portion = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
+# #
+# #       {% comment %}remove year filter {% endcomment %}
+# #       {% assign final_link = 'https://profservices.dev.looker.com' | append: left_portion__to_fields | append: field_list | append: right_portion__from_fields | append: sort_list | append: pivot_url_portion %}
+# #       {% assign split_string__pivot_field_filter_start = 'f[' | append: period_to_compare__field_to_pivot_on | append: ']=' %}
+# #       {% assign part1 = final_link | split: split_string__pivot_field_filter_start | first %}
+# #       {% assign part2 = final_link | split: split_string__pivot_field_filter_start | last %}
+# #
+# #       {% assign parts_after_created_year_filter_value = part2 | split: 'f[' | last %}
+# #       {% assign vis_config = '&vis=%7B%22type%22%3A%22looker_line%22%2C%22series_types%22%3A%7B%7D%7D' %}
+# #       {% assign final_link2 = part1 | append: 'f[' | append: parts_after_created_year_filter_value | append: vis_config %}
+# #
+# #       {{final_link2}}
+# #       "
+# #     }
+#
+#   }
+#
+#   measure: link_testing {
+#     type: count
+#   #for testing
+# #     type: string
+# #     sql: max('') ;;
+# #     html:
+# #     {% assign field_to_drill_into = created_date_day_of_year._name %}
+# #     {% assign period_to_compare__field_to_pivot_on = created_year._name %}
+# #     {% assign sort_list = '&sorts=' | append: field_to_drill_into %}
+# #     {% assign pivot_list = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
+# #
+# #     {% assign orig_link = dummy_link_holder._link %}
+# #     orig:{{orig_link}}
+# #     <br>
+# #     {% assign url_to_question_mark = orig_link | split: '?' | first | append: '?' %}
+# #     url_to_question_mark:{{url_to_question_mark}}
+# #     <br>
+# #     {% assign url_from_question_mark = orig_link | remove_first: url_to_question_mark %}
+# #     url_from_question_mark:{{url_from_question_mark}}
+# #
+# #     <br>
+# #     {% assign to_fields_begin = orig_link | split: 'fields=' | first | append: 'fields=' %}
+# #     fields_begin:{{to_fields_begin}}
+# #     <br>
+# #     {% assign from_fields_begin = orig_link | remove_first: to_fields_begin %}
+# #     from_fields_begin:{{from_fields_begin}}
+# #     <br>
+# #     {% assign fields_begin_to_fields_end = from_fields_begin | split: '&' | first %}
+# #     {% assign fields_final = fields_begin_to_fields_end | append: ',' | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on %}
+# #     fields:{{fields_final}}
+# #
+# #     <br>
+# #     {% assign to_filters_begin = orig_link | split: '&' | first %}
+# #     to_filters_begin:{{to_filters_begin}}
+# #     <br>
+# #     {% assign from_filters_begin = orig_link | remove_first: to_filters_begin | remove_first: '&' %}
+# #     from_filters_begin:{{from_filters_begin}}
+# #     <br>
+# #     {% assign filters_begin_to_filters_end = from_filters_begin | split: 'query_timezone' | first %}
+# #     filters_begin_to_filters_end:{{filters_begin_to_filters_end}}
+# #     <br>
+# #
+# #     {% assign filters_to_compare_field_start = filters_begin_to_filters_end | split: period_to_compare__field_to_pivot_on | first %}
+# #     {% assign filters_after_compare_field_start = filters_begin_to_filters_end | remove_first: filters_to_compare_field_start %}
+# #     filters_after_compare_field_start:{{filters_after_compare_field_start}}
+# #     {% assign filters_after_compare_field_to_next_filter = filters_after_compare_field_start | split: 'f[' | first %}
+# #     filters_after_compare_field_to_next_filter:{{filters_after_compare_field_to_next_filter}}
+# #     {% assign filters_after_compare_field_end = filters_after_compare_field_start | remove_first: filters_after_compare_field_to_next_filter %}
+# #     filters_after_compare_field_end:{{filters_after_compare_field_end}}
+# #     {% assign filters_without_compare_field = filters_to_compare_field_start | append: filters_after_compare_field_end |replace: 'amp;f[','&' | replace: '&&','&' %}
+# #     filters_again:{{filters_without_compare_field}}
+# #     final:{{to_fields_begin | append:fields_final | append: filters_without_compare_field | | append: pivot_list | append: sort_list  }}
+# #     ;;
+#
+#     link: {label: "YOY by day number of year
+#       {% assign field_to_drill_into = created_date_day_of_year._name %}
+#       {% assign period_to_compare__field_to_pivot_on = created_year._name %}
+#
+#       {% assign sort_list = '&sorts=' | append: field_to_drill_into %}
+#       {% assign pivot_list = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
+#       {% assign orig_link = dummy_link_holder._link %}
+#       {% assign url_to_question_mark = orig_link | split: '?' | first | append: '?' %}
+#       {% assign url_from_question_mark = orig_link | remove_first: url_to_question_mark %}
+#       {% assign to_fields_begin = orig_link | split: 'fields=' | first | append: 'fields=' %}
+#       {% assign from_fields_begin = orig_link | remove_first: to_fields_begin %}
+#       {% assign fields_begin_to_fields_end = from_fields_begin | split: '&' | first %}
+#       {% assign fields_final = fields_begin_to_fields_end | append: ',' | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on %}
+#       {% assign to_filters_begin = orig_link | split: '&' | first %}
+#       {% assign from_filters_begin = orig_link | remove_first: to_filters_begin | remove_first: '&' %}
+#       {% assign filters_begin_to_filters_end = from_filters_begin | split: 'query_timezone' | first %}
+#       {% assign filters_to_compare_field_start = filters_begin_to_filters_end | split: period_to_compare__field_to_pivot_on | first %}
+#       {% assign filters_after_compare_field_start = filters_begin_to_filters_end | remove_first: filters_to_compare_field_start %}
+#       {% assign filters_after_compare_field_to_next_filter = filters_after_compare_field_start | split: 'f[' | first %}
+#         {% assign filters_after_compare_field_end = filters_after_compare_field_start | remove_first: filters_after_compare_field_to_next_filter %}
+#
+#         {% assign filters_without_compare_field_label = filters_to_compare_field_start | append: filters_after_compare_field_end |replace: 'amp;f[','&' | replace: '&&','&' | replace: 'f[f[','f[' | replace: 'f[','--'% | replace: '&','' | replace:']','' %}
+#                 (filter on {{filters_without_compare_field_label}})
+#                 "
+# url: "{% assign field_to_drill_into = created_date_day_of_year._name %}
+# {% assign period_to_compare__field_to_pivot_on = created_year._name %}
+#
+#                 {% assign sort_list = '&sorts=' | append: field_to_drill_into %}
+#                 {% assign pivot_list = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
+#                 {% assign orig_link = dummy_link_holder._link %}
+#                 {% assign url_to_question_mark = orig_link | split: '?' | first | append: '?' %}
+#                 {% assign url_from_question_mark = orig_link | remove_first: url_to_question_mark %}
+#                 {% assign to_fields_begin = orig_link | split: 'fields=' | first | append: 'fields=' %}
+#                 {% assign from_fields_begin = orig_link | remove_first: to_fields_begin %}
+#                 {% assign fields_begin_to_fields_end = from_fields_begin | split: '&' | first %}
+#                 {% assign fields_final = fields_begin_to_fields_end | append: ',' | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on %}
+#                 {% assign to_filters_begin = orig_link | split: '&' | first %}
+#                 {% assign from_filters_begin = orig_link | remove_first: to_filters_begin | remove_first: '&' %}
+#                 {% assign filters_begin_to_filters_end = from_filters_begin | split: 'query_timezone' | first %}
+#                 {% assign filters_to_compare_field_start = filters_begin_to_filters_end | split: period_to_compare__field_to_pivot_on | first %}
+#                 {% assign filters_after_compare_field_start = filters_begin_to_filters_end | remove_first: filters_to_compare_field_start %}
+#                 {% assign filters_after_compare_field_to_next_filter = filters_after_compare_field_start | split: 'f[' | first %}
+#                   {% assign filters_after_compare_field_end = filters_after_compare_field_start | remove_first: filters_after_compare_field_to_next_filter %}
+#                   {% assign filters_without_compare_field = filters_to_compare_field_start | append: filters_after_compare_field_end |replace: 'amp;f[','&' | replace: '&&','&' | replace: 'f[f[','f['%}
+#                           {{to_fields_begin | append:fields_final | append: '&' | append: filters_without_compare_field | append: pivot_list | append: sort_list  }}"
+#                         }
+#     link: {label: "YOY by week number of year
+#       {% assign field_to_drill_into = created_date_week_of_year._name %}
+#       {% assign period_to_compare__field_to_pivot_on = created_year._name %}
+#
+#       {% assign sort_list = '&sorts=' | append: field_to_drill_into %}
+#       {% assign pivot_list = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
+#       {% assign orig_link = dummy_link_holder._link %}
+#       {% assign url_to_question_mark = orig_link | split: '?' | first | append: '?' %}
+#       {% assign url_from_question_mark = orig_link | remove_first: url_to_question_mark %}
+#       {% assign to_fields_begin = orig_link | split: 'fields=' | first | append: 'fields=' %}
+#       {% assign from_fields_begin = orig_link | remove_first: to_fields_begin %}
+#       {% assign fields_begin_to_fields_end = from_fields_begin | split: '&' | first %}
+#       {% assign fields_final = fields_begin_to_fields_end | append: ',' | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on %}
+#       {% assign to_filters_begin = orig_link | split: '&' | first %}
+#       {% assign from_filters_begin = orig_link | remove_first: to_filters_begin | remove_first: '&' %}
+#       {% assign filters_begin_to_filters_end = from_filters_begin | split: 'query_timezone' | first %}
+#       {% assign filters_to_compare_field_start = filters_begin_to_filters_end | split: period_to_compare__field_to_pivot_on | first %}
+#       {% assign filters_after_compare_field_start = filters_begin_to_filters_end | remove_first: filters_to_compare_field_start %}
+#       {% assign filters_after_compare_field_to_next_filter = filters_after_compare_field_start | split: 'f[' | first %}
+#         {% assign filters_after_compare_field_end = filters_after_compare_field_start | remove_first: filters_after_compare_field_to_next_filter %}
+#
+#         {% assign filters_without_compare_field_label = filters_to_compare_field_start | append: filters_after_compare_field_end |replace: 'amp;f[','&' | replace: '&&','&' | replace: 'f[f[','f[' | replace: 'f[','--'% | replace: '&','' | replace:']','' %}
+#                 (filter on {{filters_without_compare_field_label}})
+#                 "
+# url: "{% assign field_to_drill_into = created_date_week_of_year._name %}
+# {% assign period_to_compare__field_to_pivot_on = created_year._name %}
+#
+#                 {% assign sort_list = '&sorts=' | append: field_to_drill_into %}
+#                 {% assign pivot_list = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
+#                 {% assign orig_link = dummy_link_holder._link %}
+#                 {% assign url_to_question_mark = orig_link | split: '?' | first | append: '?' %}
+#                 {% assign url_from_question_mark = orig_link | remove_first: url_to_question_mark %}
+#                 {% assign to_fields_begin = orig_link | split: 'fields=' | first | append: 'fields=' %}
+#                 {% assign from_fields_begin = orig_link | remove_first: to_fields_begin %}
+#                 {% assign fields_begin_to_fields_end = from_fields_begin | split: '&' | first %}
+#                 {% assign fields_final = fields_begin_to_fields_end | append: ',' | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on %}
+#                 {% assign to_filters_begin = orig_link | split: '&' | first %}
+#                 {% assign from_filters_begin = orig_link | remove_first: to_filters_begin | remove_first: '&' %}
+#                 {% assign filters_begin_to_filters_end = from_filters_begin | split: 'query_timezone' | first %}
+#                 {% assign filters_to_compare_field_start = filters_begin_to_filters_end | split: period_to_compare__field_to_pivot_on | first %}
+#                 {% assign filters_after_compare_field_start = filters_begin_to_filters_end | remove_first: filters_to_compare_field_start %}
+#                 {% assign filters_after_compare_field_to_next_filter = filters_after_compare_field_start | split: 'f[' | first %}
+#                   {% assign filters_after_compare_field_end = filters_after_compare_field_start | remove_first: filters_after_compare_field_to_next_filter %}
+#                   {% assign filters_without_compare_field = filters_to_compare_field_start | append: filters_after_compare_field_end |replace: 'amp;f[','&' | replace: '&&','&' | replace: 'f[f[','f['%}
+#                           {{to_fields_begin | append:fields_final | append: '&' | append: filters_without_compare_field | append: pivot_list | append: sort_list  }}"
+#                         }
+# # {% assign field_to_drill_into = created_date_week_of_year._name %}
+#     link: {
+# label: "t"
+# #       label: "
+# # {% if created_date_quarter_of_year._is_selected %}
+# # QOQ by week number of year
+# #
+# #       {% assign period_to_compare__field_to_pivot_on = 'order_items.created_quarter' %}
+# #       {% assign field_to_drill_into = 'order_items.created_date_week_of_year' %}
+# #
+# #       {% assign sort_list = '&sorts=' | append: field_to_drill_into %}
+# #       {% assign pivot_list = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
+# #       {% assign orig_link = dummy_link_holder._link %}
+# #       {% assign url_to_question_mark = orig_link | split: '?' | first | append: '?' %}
+# #       {% assign url_from_question_mark = orig_link | remove_first: url_to_question_mark %}
+# #       {% assign to_fields_begin = orig_link | split: 'fields=' | first | append: 'fields=' %}
+# #       {% assign from_fields_begin = orig_link | remove_first: to_fields_begin %}
+# #       {% assign fields_begin_to_fields_end = from_fields_begin | split: '&' | first %}
+# #       {% assign fields_final = fields_begin_to_fields_end | append: ',' | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on %}
+# #       {% assign to_filters_begin = orig_link | split: '&' | first %}
+# #       {% assign from_filters_begin = orig_link | remove_first: to_filters_begin | remove_first: '&' %}
+# #       {% assign filters_begin_to_filters_end = from_filters_begin | split: 'query_timezone' | first %}
+# #       {% assign filters_to_compare_field_start = filters_begin_to_filters_end | split: period_to_compare__field_to_pivot_on | first %}
+# #       {% assign filters_after_compare_field_start = filters_begin_to_filters_end | remove_first: filters_to_compare_field_start %}
+# #       {% assign filters_after_compare_field_to_next_filter = filters_after_compare_field_start | split: 'f[' | first %}
+# #       {% assign filters_after_compare_field_end = filters_after_compare_field_start | remove_first: filters_after_compare_field_to_next_filter %}
+# #
+# #       {% assign filters_without_compare_field_label = filters_to_compare_field_start | append: filters_after_compare_field_end |replace: 'amp;f[','&' | replace: '&&','&' | replace: 'f[f[','f[' | replace: 'f[','--'% | replace: '&','' | replace:']','' %}
+# #       (filter on {{filters_without_compare_field_label}})
+# # {% else %}
+# # {% endif %}
+# #       "
+#
+#       url: "
+# {% if created_date_quarter_of_year._is_selected %}
+#       {% assign period_to_compare__field_to_pivot_on = 'order_items.created_quarter' %}
+#       {% assign field_to_drill_into = 'order_items.created_date_week_of_year' %}
+#
+#       {% assign sort_list = '&sorts=' | append: field_to_drill_into %}
+#       {% assign pivot_list = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
+#       {% assign orig_link = dummy_link_holder._link %}
+#
+#       {% assign url_to_question_mark = orig_link | split: '?' | first | append: '?' %}
+#       {% assign url_from_question_mark = orig_link | remove_first: url_to_question_mark %}
+#       {% assign to_fields_begin = orig_link | split: 'fields=' | first | append: 'fields=' %}
+#       {% assign from_fields_begin = orig_link | remove_first: to_fields_begin %}
+#       {% assign fields_begin_to_fields_end = from_fields_begin | split: '&' | first %}
+#       {% assign fields_final = fields_begin_to_fields_end | append: ',' | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on %}
+#       {% assign to_filters_begin = orig_link | split: '&' | first %}
+#       {% assign from_filters_begin = orig_link | remove_first: to_filters_begin | remove_first: '&' %}
+#       {% assign filters_begin_to_filters_end = from_filters_begin | split: 'query_timezone' | first %}
+#       {% assign filters_to_compare_field_start = filters_begin_to_filters_end | split: period_to_compare__field_to_pivot_on | first %}
+#
+#   {% assign filters_without_compare_field = filters_begin_to_filters_end %} {%comment%}avoids an error on string parsing when the field wouldn't be present in filter anyway{%endcomment%}
+#    {% if filters_after_compare_field_start | size > 0 %}
+#       {% assign filters_after_compare_field_start = filters_begin_to_filters_end | remove_first: filters_to_compare_field_start %}
+#       {% assign filters_after_compare_field_to_next_filter = filters_after_compare_field_start | split: 'f[' | first %}
+#       {% assign filters_after_compare_field_end = filters_after_compare_field_start | remove_first: filters_after_compare_field_to_next_filter %}
+#       {% assign filters_without_compare_field = filters_to_compare_field_start | append: filters_after_compare_field_end |replace: 'amp;f[','&' | replace: '&&','&' | replace: 'f[f[','f['%}
+#     {% else %}
 #     {% endif %}
-#     {% assign field_list = field_list | append: created_date_day_of_year._name | append: ',' | append: created_year._name | append: ',' %}
 #
-#     {% assign pivot_url_portion = '&pivots=order_items.created_year' %}
+#       {{to_fields_begin | append:fields_final | append: '&' | append: filters_without_compare_field | append: pivot_list | append: sort_list  }}
+# {% else %}
+# {% endif %}
+#       "
 #
-#     {% comment %}remove year filter {% endcomment %}
+# #       url: "
+# #       {% if created_date_quarter_of_year._is_selected %}
+# #       {% assign period_to_compare__field_to_pivot_on = 'order_items.created_quarter' %}
+# #       {% assign field_to_drill_into = 'order_items.created_date_week_of_year' %}
+# #
+# #       {% assign sort_list = '&sorts=' | append: field_to_drill_into %}
+# #       {% assign pivot_list = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
+# #       {% assign orig_link = dummy_link_holder._link %}
+# #       {% assign url_to_question_mark = orig_link | split: '?' | first | append: '?' %}
+# #       {% assign url_from_question_mark = orig_link | remove_first: url_to_question_mark %}
+# #       {% assign to_fields_begin = orig_link | split: 'fields=' | first | append: 'fields=' %}
+# #       {% assign from_fields_begin = orig_link | remove_first: to_fields_begin %}
+# #       {% assign fields_begin_to_fields_end = from_fields_begin | split: '&' | first %}
+# #       {% assign fields_final = fields_begin_to_fields_end | append: ',' | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on %}
+# #       {% assign to_filters_begin = orig_link | split: '&' | first %}
+# #       {% assign from_filters_begin = orig_link | remove_first: to_filters_begin | remove_first: '&' %}
+# #       {% assign filters_begin_to_filters_end = from_filters_begin | split: 'query_timezone' | first %}
+# #       {% assign filters_to_compare_field_start = filters_begin_to_filters_end | split: period_to_compare__field_to_pivot_on | first %}
+# #       {% if filters_after_compare_field_start | size > 0 %}
+# #         {% assign filters_after_compare_field_start = filters_begin_to_filters_end | remove_first: filters_to_compare_field_start %}
+# #         {% assign filters_after_compare_field_to_next_filter = filters_after_compare_field_start | split: 'f[' | first %}
+# #         {{filters_after_compare_field_start}},{{filters_after_compare_field_to_next_filter}}
+# #       {% else %}
+# #       {% endif %}
+# #
+# #       {% else %}
+# #       {% endif %}
+# #                 "
 #
+#     }
 #
-#     {% assign final_link = 'https://profservices.dev.looker.com' | append: left_portion__to_fields | append: field_list | append: right_portion__from_fields | append: sort_list | append: pivot_url_portion %}
-#     {% assign part1 = final_link | split: 'f[order_items.created_year]=' | first %}
-#     {% assign part2 = final_link | split: 'f[order_items.created_year]=' | last %}
-#
-#     {% assign parts_after_created_year_filter_value = part2 | split: 'f[' | last %}
-#     {% assign final_link2 = part1 | append: "f[" | append: parts_after_created_year_filter_value %}
-#     <a href="{{final_link2}}">{{value}}<a>
-#
-#     ;;
+# #         {% assign updated_filters_list = updated_filters_list | replace: 'amp;','&' | compact %}
+# #     updated_filters_list:{{updated_filters_list}}
+#   }
 
-
-
-    link: {
-      url: "
-    {% assign orig_link = dummy_link_holder._link %}
-    {% assign field_to_drill_into = created_date_week_of_year._name %}
-    {% assign period_to_compare__field_to_pivot_on = created_year._name %}
-
-{% comment %}insert the desired dimension to display in the drill and sort on that field...{% endcomment %}
-{% assign left_portion__to_fields = orig_link | split: 'fields=' | first %}
-{% assign right_portion__from_fields = orig_link | split: 'fields=' | last %}
-
-{% assign field_list = 'fields=' %}
-{% assign sort_list = '&sorts=' %}
-  {% comment %}could be dynamic based on which fields are included...like: if created_month_name._is_selected{% endcomment %}
-  {% assign field_list = field_list | append: field_to_drill_into | append: ',' %}
-  {% assign sort_list = sort_list | append: field_to_drill_into | append: ',' %}
-    {% assign field_list = field_list | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on | append: ',' %}
-
-    {% assign pivot_url_portion = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
-
-    {% comment %}remove year filter {% endcomment %}
-
-
-    {% assign final_link = 'https://profservices.dev.looker.com' | append: left_portion__to_fields | append: field_list | append: right_portion__from_fields | append: sort_list | append: pivot_url_portion %}
-    {% assign split_string__pivot_field_filter_start = 'f[' | append: period_to_compare__field_to_pivot_on | append: ']=' %}
-    {% assign part1 = final_link | split: split_string__pivot_field_filter_start | first %}
-    {% assign part2 = final_link | split: split_string__pivot_field_filter_start | last %}
-
-    {% assign parts_after_created_year_filter_value = part2 | split: 'f[' | last %}
-    {% assign vis_config = '&vis=%7B%22type%22%3A%22looker_line%22%2C%22series_types%22%3A%7B%7D%7D' %}
-    {% assign final_link2 = part1 | append: 'f[' | append: parts_after_created_year_filter_value | append: vis_config %}
-
-    {{final_link2}}
-      "
-label:
-"
-    {% assign field_to_drill_into = created_date_week_of_year._name %}
-    {% assign period_to_compare__field_to_pivot_on = created_year._name %}
-    compare {{period_to_compare__field_to_pivot_on}}s, by {{field_to_drill_into}}
-    "
+  measure: link_testing2 {
+    type: count
+#     html:
+link: {label:"--YOY Drills--"
+#       {{filters_without_drill_field | url_decode }}
+      url:"none"
     }
+#     label:"
+#
+#     {% if created_date_day_of_year._is_selected or created_date_week_of_year._is_selected or created_month_name._is_selected  %}
+#     {% else %}
+#     YOY by Quarter Of Year
+#     {% endif %}"
+link: {label:"
+  {% assign label = 'label not set' %}
+  {% if created_date_hour_of_day._is_selected %}{% assign label = 'na-lowest grain selected' %}
+  {% elsif created_date_day_of_year._is_selected %}{% assign label = 'created_date_hour_of_day' %}
+  {% elsif created_date_week_of_year._is_selected %}{% assign label = 'drill on created_date_day_of_year' %}
+  {% elsif created_month_name._is_selected %}{% assign label = 'drill on created_date_week_of_year' %}
+  {% elsif created_date_quarter_of_year._is_selected %}{% assign label = 'drill on created_month_name' %}
+  {% else %}{% assign label = 'else case reached' %}{% assign label = label | append: 'drill on created_date_quarter_of_year' %}
+  {% endif %}
+  {{label}}
+  "
+#   {% assign field_to_drill_into = created_date_quarter_of_year._name %}
+url:"
+  {% assign field_to_drill_into = created_date_day_of_year._name %}
+  {% if created_date_hour_of_day._is_selected %}{% assign field_to_drill_into = created_date_hour_of_day._name %}
+  {% elsif created_date_day_of_year._is_selected %}{% assign field_to_drill_into = created_date_hour_of_day._name %}
+  {% elsif created_date_week_of_year._is_selected %}{% assign field_to_drill_into = created_date_day_of_year._name %}
+  {% elsif created_month_name._is_selected %}{% assign field_to_drill_into = created_date_week_of_year._name %}
+  {% elsif created_date_quarter_of_year._is_selected %}{% assign field_to_drill_into = created_month_name._name %}
+  {% else %}{% assign label = 'else case reached' %}{% assign field_to_drill_into = created_date_quarter_of_year._name %}
+  {% endif %}
 
-    link: {
-      url: "
-      {% assign orig_link = dummy_link_holder._link %}
-      {% assign field_to_drill_into = created_date_day_of_year._name %}
+
+
       {% assign period_to_compare__field_to_pivot_on = created_year._name %}
 
-      {% comment %}insert the desired dimension to display in the drill and sort on that field...{% endcomment %}
-      {% assign left_portion__to_fields = orig_link | split: 'fields=' | first %}
-      {% assign right_portion__from_fields = orig_link | split: 'fields=' | last %}
 
-      {% assign field_list = 'fields=' %}
-      {% assign sort_list = '&sorts=' %}
-      {% comment %}could be dynamic based on which fields are included...like: if created_month_name._is_selected{% endcomment %}
-      {% assign field_list = field_list | append: field_to_drill_into | append: ',' %}
-      {% assign sort_list = sort_list | append: field_to_drill_into | append: ',' %}
-      {% assign field_list = field_list | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on | append: ',' %}
+      {% assign sort_list = '&sorts=' | append: field_to_drill_into %}
+      {% assign pivot_list = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
+      {% assign orig_link = dummy_link_holder._link %}
+      {% assign url_to_question_mark = orig_link | split: '?' | first | append: '?' %}
+      {% assign url_from_question_mark = orig_link | remove_first: url_to_question_mark %}
+      {% assign to_fields_begin = orig_link | split: 'fields=' | first | append: 'fields=' %}
+      {% assign from_fields_begin = orig_link | remove_first: to_fields_begin %}
+      {% assign fields_begin_to_fields_end = from_fields_begin | split: '&' | first %}
+      {% assign fields_final = fields_begin_to_fields_end | append: ',' | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on %}
 
-      {% assign pivot_url_portion = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
+      {% assign to_filters_begin = orig_link | split: '&f' | first %}
+      {% assign from_filters_begin = orig_link | remove_first: to_filters_begin | remove_first: '&' %}
+      {% assign filters_begin_to_filters_end = from_filters_begin | split: 'query_timezone' | first %}
+      {% assign filters_to_compare_field_start = filters_begin_to_filters_end | split: period_to_compare__field_to_pivot_on | first %}
+      {% if filters_to_compare_field_start | size > 2 %}
+        {% assign filters_after_compare_field_start = filters_begin_to_filters_end | remove_first: filters_to_compare_field_start %}{%comment%}avoids an error on string parsing when the field wouldn't be present in filter anyway{%endcomment%}
+      {% else %}
+        {% assign filters_after_compare_field_start = filters_begin_to_filters_end %}
+      {% endif %}
 
-      {% comment %}remove year filter {% endcomment %}
+      {% assign filters_after_compare_field_to_next_filter = filters_after_compare_field_start | split: 'f[' | first %}
+      {% assign filters_after_compare_field_end = filters_after_compare_field_start | remove_first: filters_after_compare_field_to_next_filter %}
+
+      {% assign filters_without_compare_field = filters_to_compare_field_start | append: filters_after_compare_field_end |replace: 'amp;f[','&' | replace: '&&','&' | replace: 'f[f[','f[' | replace: '~~~','' %}
 
 
-      {% assign final_link = 'https://profservices.dev.looker.com' | append: left_portion__to_fields | append: field_list | append: right_portion__from_fields | append: sort_list | append: pivot_url_portion %}
-      {% assign split_string__pivot_field_filter_start = 'f[' | append: period_to_compare__field_to_pivot_on | append: ']=' %}
-      {% assign part1 = final_link | split: split_string__pivot_field_filter_start | first %}
-      {% assign part2 = final_link | split: split_string__pivot_field_filter_start | last %}
+      {{to_fields_begin | append:fields_final | append: '&' | append: filters_without_compare_field | append: pivot_list | append: sort_list  }}
+{%comment%}avoids an error on string parsing when the field wouldn't be present in filter anyway
+      {% assign filters_without_compare_field = filters_begin_to_filters_end %}
+      {% assign filters_after_compare_field_start = filters_begin_to_filters_end | remove_first: filters_to_compare_field_start %}
+{%endcomment%}"
+}
+#    ;;
+    link: {label:"YOY by Month Of Year"
+      url:" {% assign period_to_compare__field_to_pivot_on = created_year._name %}
+      {% assign field_to_drill_into = created_month_name._name %}
 
-      {% assign parts_after_created_year_filter_value = part2 | split: 'f[' | last %}
-      {% assign vis_config = '&vis=%7B%22type%22%3A%22looker_line%22%2C%22series_types%22%3A%7B%7D%7D' %}
-      {% assign final_link2 = part1 | append: 'f[' | append: parts_after_created_year_filter_value | append: vis_config %}
+      {% assign sort_list = '&sorts=' | append: field_to_drill_into %}
+      {% assign pivot_list = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
+      {% assign orig_link = dummy_link_holder._link %}
+      {% assign url_to_question_mark = orig_link | split: '?' | first | append: '?' %}
+      {% assign url_from_question_mark = orig_link | remove_first: url_to_question_mark %}
+      {% assign to_fields_begin = orig_link | split: 'fields=' | first | append: 'fields=' %}
+      {% assign from_fields_begin = orig_link | remove_first: to_fields_begin %}
+      {% assign fields_begin_to_fields_end = from_fields_begin | split: '&' | first %}
+      {% assign fields_final = fields_begin_to_fields_end | append: ',' | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on %}
 
-      {{final_link2}}
-      "
-      label:
-      "
-      {% assign field_to_drill_into = created_date_day_of_year._name %}
-      {% assign period_to_compare__field_to_pivot_on = created_year._name %}
-      compare {{period_to_compare__field_to_pivot_on}}s, by {{field_to_drill_into}}
-      "
+      {% assign to_filters_begin = orig_link | split: '&f' | first %}
+      {% assign from_filters_begin = orig_link | remove_first: to_filters_begin | remove_first: '&' %}
+      {% assign filters_begin_to_filters_end = from_filters_begin | split: 'query_timezone' | first %}
+      {% assign filters_to_compare_field_start = filters_begin_to_filters_end | split: period_to_compare__field_to_pivot_on | first %}
+      {% if filters_to_compare_field_start | size > 2 %}
+        {% assign filters_after_compare_field_start = filters_begin_to_filters_end | remove_first: filters_to_compare_field_start %}{%comment%}avoids an error on string parsing when the field wouldn't be present in filter anyway{%endcomment%}
+      {% else %}
+        {% assign filters_after_compare_field_start = filters_begin_to_filters_end %}
+      {% endif %}
+
+      {% assign filters_after_compare_field_to_next_filter = filters_after_compare_field_start | split: 'f[' | first %}
+      {% assign filters_after_compare_field_end = filters_after_compare_field_start | remove_first: filters_after_compare_field_to_next_filter %}
+
+      {% assign filters_without_compare_field = filters_to_compare_field_start | append: filters_after_compare_field_end |replace: 'amp;f[','&' | replace: '&&','&' | replace: 'f[f[','f[' | replace: '~~~','' %}
+
+
+      {{to_fields_begin | append:fields_final | append: '&' | append: filters_without_compare_field | append: pivot_list | append: sort_list  }}
+{%comment%}avoids an error on string parsing when the field wouldn't be present in filter anyway
+      {% assign filters_without_compare_field = filters_begin_to_filters_end %}
+      {% assign filters_after_compare_field_start = filters_begin_to_filters_end | remove_first: filters_to_compare_field_start %}
+{%endcomment%}"
     }
+    link: {label:"YOY by Week Of Year"
+      url:" {% assign period_to_compare__field_to_pivot_on = created_year._name %}
+      {% assign field_to_drill_into = created_date_week_of_year._name %}
 
-    link: {#by quarter of year
-      url: "
+      {% assign sort_list = '&sorts=' | append: field_to_drill_into %}
+      {% assign pivot_list = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
       {% assign orig_link = dummy_link_holder._link %}
+      {% assign url_to_question_mark = orig_link | split: '?' | first | append: '?' %}
+      {% assign url_from_question_mark = orig_link | remove_first: url_to_question_mark %}
+      {% assign to_fields_begin = orig_link | split: 'fields=' | first | append: 'fields=' %}
+      {% assign from_fields_begin = orig_link | remove_first: to_fields_begin %}
+      {% assign fields_begin_to_fields_end = from_fields_begin | split: '&' | first %}
+      {% assign fields_final = fields_begin_to_fields_end | append: ',' | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on %}
+
+      {% assign to_filters_begin = orig_link | split: '&f' | first %}
+      {% assign from_filters_begin = orig_link | remove_first: to_filters_begin | remove_first: '&' %}
+      {% assign filters_begin_to_filters_end = from_filters_begin | split: 'query_timezone' | first %}
+      {% assign filters_to_compare_field_start = filters_begin_to_filters_end | split: period_to_compare__field_to_pivot_on | first %}
+      {% if filters_to_compare_field_start | size > 2 %}
+        {% assign filters_after_compare_field_start = filters_begin_to_filters_end | remove_first: filters_to_compare_field_start %}{%comment%}avoids an error on string parsing when the field wouldn't be present in filter anyway{%endcomment%}
+      {% else %}
+        {% assign filters_after_compare_field_start = filters_begin_to_filters_end %}
+      {% endif %}
+
+      {% assign filters_after_compare_field_to_next_filter = filters_after_compare_field_start | split: 'f[' | first %}
+      {% assign filters_after_compare_field_end = filters_after_compare_field_start | remove_first: filters_after_compare_field_to_next_filter %}
+
+      {% assign filters_without_compare_field = filters_to_compare_field_start | append: filters_after_compare_field_end |replace: 'amp;f[','&' | replace: '&&','&' | replace: 'f[f[','f[' | replace: '~~~','' %}
+
+
+      {{to_fields_begin | append:fields_final | append: '&' | append: filters_without_compare_field | append: pivot_list | append: sort_list  }}
+{%comment%}avoids an error on string parsing when the field wouldn't be present in filter anyway
+      {% assign filters_without_compare_field = filters_begin_to_filters_end %}
+      {% assign filters_after_compare_field_start = filters_begin_to_filters_end | remove_first: filters_to_compare_field_start %}
+{%endcomment%}"
+    }
+    link: {label:"YOY by Day Of Year"
+      url:" {% assign period_to_compare__field_to_pivot_on = created_year._name %}
       {% assign field_to_drill_into = created_date_day_of_year._name %}
-      {% assign period_to_compare__field_to_pivot_on = created_date_quarter_of_year._name %}
 
-      {% comment %}insert the desired dimension to display in the drill and sort on that field...{% endcomment %}
-      {% assign left_portion__to_fields = orig_link | split: 'fields=' | first %}
-      {% assign right_portion__from_fields = orig_link | split: 'fields=' | last %}
-
-      {% assign field_list = 'fields=' %}
-      {% assign sort_list = '&sorts=' %}
-      {% comment %}could be dynamic based on which fields are included...like: if created_month_name._is_selected{% endcomment %}
-      {% assign field_list = field_list | append: field_to_drill_into | append: ',' %}
-      {% assign sort_list = sort_list | append: field_to_drill_into | append: ',' %}
-      {% assign field_list = field_list | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on | append: ',' %}
-
-      {% assign pivot_url_portion = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
-
-      {% comment %}remove year filter {% endcomment %}
-      {% assign final_link = 'https://profservices.dev.looker.com' | append: left_portion__to_fields | append: field_list | append: right_portion__from_fields | append: sort_list | append: pivot_url_portion %}
-      {% assign split_string__pivot_field_filter_start = 'f[' | append: period_to_compare__field_to_pivot_on | append: ']=' %}
-      {% assign part1 = final_link | split: split_string__pivot_field_filter_start | first %}
-      {% assign part2 = final_link | split: split_string__pivot_field_filter_start | last %}
-
-      {% assign parts_after_created_year_filter_value = part2 | split: 'f[' | last %}
-      {% assign vis_config = '&vis=%7B%22type%22%3A%22looker_line%22%2C%22series_types%22%3A%7B%7D%7D' %}
-      {% assign final_link2 = part1 | append: 'f[' | append: parts_after_created_year_filter_value | append: vis_config %}
-
-      {{final_link2}}
-      "
-      label:#create a label that says what is being filtered on.
-      "
+      {% assign sort_list = '&sorts=' | append: field_to_drill_into %}
+      {% assign pivot_list = '&pivots=' | append: period_to_compare__field_to_pivot_on %}
       {% assign orig_link = dummy_link_holder._link %}
-      {% assign field_to_drill_into = created_date_day_of_year._name %}
-      {% assign period_to_compare__field_to_pivot_on = created_date_quarter_of_year._name %}
+      {% assign url_to_question_mark = orig_link | split: '?' | first | append: '?' %}
+      {% assign url_from_question_mark = orig_link | remove_first: url_to_question_mark %}
+      {% assign to_fields_begin = orig_link | split: 'fields=' | first | append: 'fields=' %}
+      {% assign from_fields_begin = orig_link | remove_first: to_fields_begin %}
+      {% assign fields_begin_to_fields_end = from_fields_begin | split: '&' | first %}
+      {% assign fields_final = fields_begin_to_fields_end | append: ',' | append: field_to_drill_into | append: ',' | append: period_to_compare__field_to_pivot_on %}
 
-      {% assign left_portion__to_filters = orig_link | split: '&f[' | first %}
-      {% assign right_portion__from_filters = orig_link | split: left_portion__to_filters | last %}
-      {% assign filters = right_portion__from_filters | split: '&sorts=' | first | split: '&query_timezone' | first | split: '&limit' | first %}
+      {% assign to_filters_begin = orig_link | split: '&f' | first %}
+      {% assign from_filters_begin = orig_link | remove_first: to_filters_begin | remove_first: '&' %}
+      {% assign filters_begin_to_filters_end = from_filters_begin | split: 'query_timezone' | first %}
+      {% assign filters_to_compare_field_start = filters_begin_to_filters_end | split: period_to_compare__field_to_pivot_on | first %}
+      {% if filters_to_compare_field_start | size > 2 %}
+      {% assign filters_after_compare_field_start = filters_begin_to_filters_end | remove_first: filters_to_compare_field_start %}{%comment%}avoids an error on string parsing when the field wouldn't be present in filter anyway{%endcomment%}
+      {% else %}
+      {% assign filters_after_compare_field_start = filters_begin_to_filters_end %}
+      {% endif %}
 
-      {% assign formatted_filters = filters | replace: '&f[','-' | replace: ']','' %}
-      compare {{period_to_compare__field_to_pivot_on}}s, by {{field_to_drill_into}}, filter on {{formatted_filters}}
-      "
+      {% assign filters_after_compare_field_to_next_filter = filters_after_compare_field_start | split: 'f[' | first %}
+      {% assign filters_after_compare_field_end = filters_after_compare_field_start | remove_first: filters_after_compare_field_to_next_filter %}
+
+      {% assign filters_without_compare_field = filters_to_compare_field_start | append: filters_after_compare_field_end |replace: 'amp;f[','&' | replace: '&&','&' | replace: 'f[f[','f[' | replace: '~~~','' %}
+
+
+      {{to_fields_begin | append:fields_final | append: '&' | append: filters_without_compare_field | append: pivot_list | append: sort_list  }}
+      {%comment%}avoids an error on string parsing when the field wouldn't be present in filter anyway
+      {% assign filters_without_compare_field = filters_begin_to_filters_end %}
+      {% assign filters_after_compare_field_start = filters_begin_to_filters_end | remove_first: filters_to_compare_field_start %}
+      {%endcomment%}"
     }
   }
+
   dimension: created_date_quarter_of_year {
     type: date_quarter_of_year
     sql: ${created_raw} ;;
@@ -441,7 +1034,42 @@ label:
     order_by_field: created_month_num2
 #     html: {{link_text_modified._linked_value}} ;;
   }
+  dimension: created_date_hour_of_day {
+    type: date_hour_of_day
+    sql: ${created_raw} ;;
+  }
 
+  measure: m3 {
+    type: count
+    html:
+    {% assign t= created_month_name._name | split : 'x' | first %}
+    {% assign t2 = t |remove:t %}
+    {% assign t3 = t2 | remove_first:'a'%}
+    t{{t}}
+    t2{{t2}}
+
+    ;;
+  }
+
+#testing caching and alerting
+  dimension: static_dimension  {
+    type: string
+    sql: 'static value' ;;
+  }
+  dimension: rand_dimension  {
+    type: string
+    sql: random() ;;
+  }
+
+  measure: static_measure  {
+    type: number
+    sql: max(1) ;;
+  }
+
+  measure: random_measure  {
+    type: number
+    sql: max(random()) ;;
+  }
 
 #   {% assign field_list = orig_link | slice: 2,5 %}
 # fields=
