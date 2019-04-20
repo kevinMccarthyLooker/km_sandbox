@@ -4,9 +4,14 @@ view: users {
   sql_table_name: public.users ;;
 
   dimension: id {
-    primary_key: yes
+#     primary_key: yes
     type: number
     sql: ${TABLE}.id ;;
+  }
+  dimension: primary_key {
+    primary_key: yes
+    type: number
+    sql: ${id};;
   }
 
   dimension: age {
@@ -115,6 +120,10 @@ view: users {
 
   measure: count {
     type: count
+    filters:{
+      field: primary_key
+      value: "NOT NULL"
+    }
     drill_fields: [id, first_name, last_name, events.count, order_items.count]
   }
 

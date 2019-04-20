@@ -143,7 +143,7 @@ explore: users {
 join: demo_summary_measures   {from:summary_measures                                sql:;;relationship:one_to_one fields:[gender_summary,age_summary,full_name_summary]}
 join: city_summary_measures   {from:summary_measures                                sql:;;relationship:one_to_one fields:[city_summary]}
 join: functions               {fields:[function_add,safe_divide]                    sql:;;relationship:one_to_one}
-join: order_items             {relationship:one_to_many           type:left_outer   sql_on: ${order_items.user_id}=${users.id} ;;}
+join: order_items             {relationship:one_to_one           type:left_outer   sql_on: ${order_items.user_id}=${users.id} ;;}
 
 #seeing how easy it is to implement friendly custom filters.  not too hard but ugly with timezones and whatnot.
 #   sql_always_where:
@@ -234,3 +234,7 @@ explore: users2 {
 }
 
 explore: order_items {}
+
+#intentionally reproduced errors when extending a field to a different type
+# include: "test_date_for_tpx.view.lkml"
+# explore: extending_test_date_for_tpx {}

@@ -1,28 +1,28 @@
 view: events {
   sql_table_name: public.events ;;
 
-  dimension: id {
-    primary_key: yes
-    type: number
-    sql: ${TABLE}.id ;;
-  }
+##### FOLD: keys {
+dimension: id {
+#     primary_key: yes
+  type: number sql: ${TABLE}.id ;;
+}
+dimension: primary_key {
+  type: number
+  primary_key: yes
+  sql: ${id} ;;
+}
+dimension: session_id {
+  type: string
+  sql: ${TABLE}.session_id ;;
+}
+dimension: user_id {
+  type: number
+  # hidden: yes
+  sql: ${TABLE}.user_id ;;
+}
+##}<fold keys
 
-  dimension: browser {
-    type: string
-    sql: ${TABLE}.browser ;;
-  }
-
-  dimension: city {
-    type: string
-    sql: ${TABLE}.city ;;
-  }
-
-  dimension: country {
-    type: string
-    map_layer_name: countries
-    sql: ${TABLE}.country ;;
-  }
-
+##### FOLD: dates {
   dimension_group: created {
     type: time
     timeframes: [
@@ -36,70 +36,91 @@ view: events {
     ]
     sql: ${TABLE}.created_at ;;
   }
+#}<fold dates
 
-  dimension: event_type {
-    type: string
-    sql: ${TABLE}.event_type ;;
-  }
+##### FOLD: location {
+dimension: city {
+  type: string
+  sql: ${TABLE}.city ;;
+}
+dimension: country {
+  type: string
+  map_layer_name: countries
+  sql: ${TABLE}.country ;;
+}
+dimension: latitude {
+  type: number
+  sql: ${TABLE}.latitude ;;
+}
+dimension: longitude {
+  type: number
+  sql: ${TABLE}.longitude ;;
+}
+dimension: zip {
+  type: zipcode
+  sql: ${TABLE}.zip ;;
+}
+dimension: state {
+  type: string
+  sql: ${TABLE}.state ;;
+}
+#}<fold location
 
-  dimension: ip_address {
-    type: string
-    sql: ${TABLE}.ip_address ;;
-  }
+##### Fold: Other Fields {
+dimension: browser {
+  type: string
+  sql:
+  --{fold within sql
+  -- pretending there's a long block of sql
+  -- pretending there's a long block of sql
+  -- pretending there's a long block of sql
+  -- pretending there's a long block of sql
+  -- pretending there's a long block of sql
+    ${TABLE}.browser
+  -- pretending there's a long block of sql
+  -- pretending there's a long block of sql
+  -- pretending there's a long block of sql
+  -- pretending there's a long block of sql
+  --}^fold within sql
+  -- pretending there's a long block of sql
+    ;;
+}
+dimension: event_type {
+  type: string
+  sql: ${TABLE}.event_type ;;
+}
+dimension: ip_address {
+  type: string
+  sql: ${TABLE}.ip_address ;;
+}
+dimension: os {
+  type: string
+  sql: ${TABLE}.os ;;
+}
+dimension: sequence_number {
+  type: number
+  sql: ${TABLE}.sequence_number ;;
+}
+dimension: traffic_source {
+  type: string
+  sql: ${TABLE}.traffic_source ;;
+}
+dimension: uri {
+  type: string
+  sql: ${TABLE}.uri ;;
+}
+#####}<fold other fields
 
-  dimension: latitude {
-    type: number
-    sql: ${TABLE}.latitude ;;
-  }
-
-  dimension: longitude {
-    type: number
-    sql: ${TABLE}.longitude ;;
-  }
-
-  dimension: os {
-    type: string
-    sql: ${TABLE}.os ;;
-  }
-
-  dimension: sequence_number {
-    type: number
-    sql: ${TABLE}.sequence_number ;;
-  }
-
-  dimension: session_id {
-    type: string
-    sql: ${TABLE}.session_id ;;
-  }
-
-  dimension: state {
-    type: string
-    sql: ${TABLE}.state ;;
-  }
-
-  dimension: traffic_source {
-    type: string
-    sql: ${TABLE}.traffic_source ;;
-  }
-
-  dimension: uri {
-    type: string
-    sql: ${TABLE}.uri ;;
-  }
-
-  dimension: user_id {
-    type: number
-    # hidden: yes
-    sql: ${TABLE}.user_id ;;
-  }
-
-  dimension: zip {
-    type: zipcode
-    sql: ${TABLE}.zip ;;
-  }
-
-  measure: count {
-    type: count
-    drill_fields: [id, users.id, users.first_name, users.last_name]
-  }
+##### Fold: Measures {
+measure: count {
+  type: number
+  sql: sum(case when ${primary_key} is not null then 1 else null end) ;;
+#     type: count
+#     filters:{
+#       field: primary_key
+#       value: "NOT NULL"
+#     }
+  drill_fields: [id, users.id, users.first_name, users.last_name]
+}
+#}<fold measures
 }

@@ -95,8 +95,12 @@ view: order_items {
   }
 
   dimension: id {
-    primary_key: yes
     type: number
+    sql: ${TABLE}.id ;;
+  }
+  dimension: primary_key {
+    type: number
+    primary_key: yes
     sql: ${TABLE}.id ;;
   }
 
@@ -114,6 +118,21 @@ view: order_items {
     ]
     sql: ${TABLE}.created_at ;;
   }
+
+#   dimension: user_tenure_months {
+#     label: "User Tenure Months"
+#     type: number
+#     sql: datediff(month, ${users.created_raw},${created_raw}) ;;
+#
+#
+#   }
+#
+#   dimension: user_tenure_months_duration {
+#     type: duration_month
+#     sql_start: ${users.created_raw} ;;
+#     sql_end: ${created_raw}  ;;
+#   }
+
 
 #Date Field dynamically grouped based on the filter range.
 ## This is the field you would actually display on the dashboard tile.  You may choose to hide it from the explore if you think it will not be intuitive for ad hoc use.
@@ -176,6 +195,11 @@ view: order_items {
     sql: ${TABLE}.sale_price ;;
   }
 
+  measure: average_sale_price_lookml {
+    type: average
+    sql: ${sale_price} ;;
+  }
+
   dimension_group: shipped {
     type: time
     timeframes: [
@@ -209,8 +233,13 @@ view: order_items {
   }
 
   measure: count {
-    type: count
+    type: number
+    sql: sum(case when ${primary_key} is not null then 1 else null end) ;;
     drill_fields: [detail*]
+#     filters:{
+#       field: primary_key
+#       value: "NOT NULL"
+#     }
     #idea is to dynamicall color these based on percent of total.  Relating to a question Mark was asking
 #     html:{% if count_percent_of_total._value > 1 %}{{ value }}{% else %}no-{{ count_percent_of_total._value }}{% endif %} ;;
   }
@@ -1039,6 +1068,11 @@ url:"
     sql: ${created_raw} ;;
   }
 
+  dimension: created_date_day_of_week {
+    type: date_day_of_week
+    sql: ${created_raw} ;;
+  }
+
   measure: m3 {
     type: count
     html:
@@ -1071,6 +1105,72 @@ url:"
     sql: max(random()) ;;
   }
 
+
+
+
 #   {% assign field_list = orig_link | slice: 2,5 %}
 # fields=
+
+###2019-02-06 testing format switch for measure selector
+parameter: measure_selector2 {
+  allowed_value: {
+    value:"count2"
+    label:"count2"
+  }
+  allowed_value: {
+    value:"total_sales2"
+    label:"total_sales2"
+  }
+}
+measure: count2 {
+  type: count
+  value_format_name: id
+}
+measure: total_sales2 {
+  type: sum
+  sql: ${sale_price};;
+  value_format_name: usd
+}
+measure: selected {
+  type: number
+  sql: {%if measure_selector2._parameter_value == "'count2'" %}${count2}{% else %}${total_sales2}{% endif %} ;;
+  html: {%if measure_selector2._parameter_value == "'count2'" %}{{ count2._rendered_value }}{% else %}{{ total_sales2._rendered_value }}{% endif %} ;;
+}
+
+
+# dimension: emoji_testing {
+#   group_label: "🤣"
+#   label: "😀🦑<br>⚂♟{{order_items.emoji_testing._sql}}"
+#   description: "🐠<br />⚂♟"
+#   type: string
+#   sql: 't
+#   😄
+#   t2' ;;
+#   html: emoji:{{rendered_value}} ;;
+#
+# }
+#   dimension: emoji_testing2 {
+#     group_label: "🤣"
+#     label: "😀🦑<br>⚂♟{{order_items.emoji_testing._sql}}"
+#     description: "🐠<br />⚂♟2"
+#     type: string
+#     sql: 't
+#         😄
+#         t2' ;;
+#     html: emoji:{{rendered_value}} ;;
+
+#   }
+
+  dimension_group: some_date2  {
+
+    type: time
+    timeframes: [raw,date,month]
+    sql: ${TABLE}.created_at ;;
+  }
+
+  filter: yesno_filter {
+    type: yesno
+    sql: {% condition yesno_filter %} true {% endcondition %} ;;
+  }
+
 }
