@@ -7,6 +7,7 @@ view: users {
 }
 
 view: use_this_to_invoke_exception_to_row_level_restriction {
+  #made this field a parameter only to make clear it's a special thing.. but anything from this view will cause the exception to be invoked
   parameter: invoke_exception {
     #hidden: yes # unhide this to use on your special tile, then hide before pushing to production
     type: unquoted
