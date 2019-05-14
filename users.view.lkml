@@ -1,4 +1,5 @@
 include: "functions.*"
+include: "gender_user_dt.view.lkml"
 view: users {
   sql_table_name: public.users ;;
 
@@ -276,4 +277,171 @@ dimension: html_sql {
 # # sql: {{ functions.function_add._sql }} ;;
 #   }
 
+  filter: user_id {
+    type: string
+
+  }
+
+  dimension: product_list {
+    type: string
+#     sql:  select min(${first_name}) from order_items left join users on order_items.user_id=users.id where order_items.product_id /*b-{% condition product_category %}*/{% endcondition %}/*-e*/;;
+    sql: (select listagg(users.first_name,',') from public.order_items left join inventory_items on inventory_items.id=order_items.inventory_item_id left join users on order_items.user_id=users.id where cast(inventory_items.product_id as varchar) /*b-{% condition user_id %}*/{% endcondition %}/*-e*/;;
+  }
+#test grab sql
+#   dimension: grab_sql_of_a_filter_field {}
+
+
+parameter: friendly_created_date_filter {
+  type: string
+  allowed_value: {
+    label:"Yesterday"
+    value: "Yesterday"
+  }
+  allowed_value: {
+    label:"Last 1 Week"
+    value: "Last_1_Week"
+  }
+  default_value: "none_selected"
+}
+
+dimension_group: now_time_holder {
+  type: time
+  timeframes: [raw,date,month,year]
+  sql: GETDATE() ;;
+}
+  dimension: range_end {
+    type: date
+    sql:
+    dateadd(day,
+    1,GETDATE()) ;;
+  }
+# dimension: in_last_7_days{
+#   type: yesno
+#   sql: (${created_raw}>=dateadd(day,-6, ${now_time_holder_date}) and ${created_raw}<dateadd(day,1,${now_time_holder_date}));;
+# }
+dimension_group: range_start {
+  type: time
+  timeframes: [raw,date,month,year]
+  sql:
+  dateadd(day,
+  {% if friendly_created_date_filter._parameter_value == "'Yesterday'" %} -1 {% endif %}
+  {% if friendly_created_date_filter._parameter_value == "'Last_1_Week'" %} -6 {% endif %}
+  ,${now_time_holder_date}) ;;
+}
+
+
+filter: hidden_filter {
+  type: date
+  default_value: "the past 7 days"
+}
+
+dimension: in_query_or_test {
+  sql:
+  {% assign first_part = false %}
+  {% assign second_part = false %}
+  {% assign first_or_second = false %}
+  {% if users.created_date._in_query %}date{% endif %}
+  {% if users.created_month._in_query %}month{% endif %}
+  {% if users.created_year._in_query %}2{% endif %}
+  {% if (users.created_date._in_query or users.created_month._in_query) %}  first is true {% assign first_part = true %}{% endif %}
+  {% if (users.created_year._in_query) %}  2nd is true {% assign second_part = true %}{% endif %}
+  {% if (users.created_date._in_query OR users.created_month._in_query) AND (users.created_year._in_query)  %}test logic output{% endif %} /*evaluates to true */
+  {% if second_part or first_part %}{% assign first_or_second = true %}{% endif %}
+  {% if first_part %}
+    {% if second_part %}
+
+    {% endif %}
+  {% endif %}
+  f:{{first_part}}
+  S:{{second_part}}
+  {{first_or_second}}
+  ;;
+}
+
+  dimension: in_query_or_test_example {
+    sql:
+      {% assign first_part = false %}
+      {% if users.created_date._in_query or users.created_month._in_query %}{% assign first_part = true %}{% endif %}
+
+      {% assign second_part = false %}
+      {% if users.created_year._in_query %}{% assign second_part = true %}{% endif %}
+
+      {% assign first_and_second = false %}
+      {% if first_part and second_part %}/* do something cool */{% endif %}
+      ;;
+  }
+
+  dimension: test_faceted_filters {
+    sql: '1' ;;
+#     suggest_explore: gender_user_dt
+#     suggest_dimension: gender_user_dt.value
+    suggest_persist_for: "0 minutes"
+#     suggest_explore:users
+    suggest_dimension: for_suggestions
+  }
+
+
+  dimension: t1 {
+    suggest_persist_for: "0 minutes"
+    sql: {% condition users.gender %}${gender}{% endcondition %} ;;
+  }
+
+  dimension: for_suggestions {
+    suggest_persist_for: "0 minutes"
+#     case when {% condition users.gender %}${gender}{% endcondition %} then ${first_name} else null end ;;
+    sql:
+    {{t1._sql}}
+    {% assign t = t1._sql %}
+    case when  {{t}} then ${first_name} else null end ;;
+
+  }
+
+dimension: test_link {
+  sql: '1' ;;
+  link: {
+    label: "test google with line break"
+    url:
+    "https://google{% comment %}
+    {% endcomment %}.{% comment %}
+    {% endcomment %}com"
+  }
+}
+
+
+dimension: city2 {
+  sql: {{city._sql}} ;;
+}
+dimension: city3 {
+  sql: {{city2._sql}} ;;
+}
+dimension: city_concat {
+  sql: ${city}||'test' ;;
+}
+dimension: city_concat2 {
+  sql: {{city_concat._sql}} ;;
+}
+
+parameter: date_param {
+  label: "param"
+  type: date
+}
+
+dimension: date_start_exposure {
+#   sql: {% condition created_date %}'t' {% endcondition%}
+# sql: {% date_param._parameter_value %}
+sql:  {% parameter date_param %}
+
+  ;;
+}
+
+dimension: in_query_test {
+  type: string
+  sql: {{users.city._in_query}}
+  {% if users.city._in_query %}
+  1=1
+  {% else %}
+  eval to false
+  {% endif %}
+  ;;
+}
 }
