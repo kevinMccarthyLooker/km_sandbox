@@ -5,6 +5,22 @@ include: "*.view.lkml"                       # include all views in this project
 
 view: users__links
 {
+
+  dimension: test_link_syntax1 {
+    sql: 1 ;;
+    link: {
+      label: "test1"
+      url: "https://www.google.com/search?q={{ age._value }}"
+    }
+  }
+  dimension: test_link_syntax2 {
+    sql: 1 ;;
+    link: {
+      label: "{% if row['users__links.age'] %}my label{%endif%}"
+      url: "https://www.google.com/search?q={{ row['users__links.age']}}"
+    }
+  }
+
   sql_table_name: public.users ;;
   dimension: id {primary_key:yes}
   dimension: age {

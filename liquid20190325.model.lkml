@@ -47,6 +47,14 @@ view: users_liquid {
     type: sum
     sql: 2  ;;
   }
+  measure: count {
+    type: count
+    drill_fields: [metric_1]
+  }
+  measure: m2 {
+    sql: 1 ;;
+    html: {{count._link}} ;;
+  }
 }
 
 
@@ -265,3 +273,17 @@ explore: users_view
   join: id_over_age {sql:;; relationship: one_to_one}
   join: acronymize1 {sql:;; relationship: one_to_one}
 }
+
+
+
+view: liquid_nulls_test {
+  sql_table_name: public.users ;;
+  dimension: my_customer_value {
+    # sql: 'value: {{_user_attributes['service_unit_name']}}';;
+    sql: {% if _user_attributes['service_unit_name'] %}'found'{%else%}not found{%endif%} ;;
+
+  }
+
+}
+
+explore: liquid_nulls_test {}

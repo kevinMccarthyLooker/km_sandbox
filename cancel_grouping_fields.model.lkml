@@ -11,6 +11,20 @@ view: users__cancel_grouping
   dimension: age {}
   measure: count {}
 
+  dimension: created_week {
+    type: date_week_of_year
+    sql: ${TABLE}.created_at ;;
+  }
+  dimension: created_week_at_month_begin {
+    type: date_week_of_year
+    sql: date_trunc('month',${TABLE}.created_at) ;;
+  }
+
+  dimension: created_week_of_month {
+    type: number
+    sql:${created_week}-${created_week_at_month_begin}  ;;
+  }
+
   #two fields to control whether looker uses group by or not
   dimension: group_by__yes {sql: null ;;}
   dimension: group_by__no {sql: null ;;}
