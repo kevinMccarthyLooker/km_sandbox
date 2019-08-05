@@ -1,5 +1,6 @@
 connection: "thelook_events_redshift"
 
+#define an access grant that can be used to restrict access to various objects
 access_grant: restricted_data_access {
   user_attribute: can_access_sensitive_data
   allowed_values: ["Yes"]
