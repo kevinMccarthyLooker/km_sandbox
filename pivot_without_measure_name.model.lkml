@@ -1,6 +1,7 @@
 connection: "thelook_events_redshift"
 
 include: "basic_users.view"
+include: "order_items.view"
 
 view: users__pivot_without_measure_name {
   view_label: "Users"
@@ -13,4 +14,10 @@ view: users__pivot_without_measure_name {
   }
 }
 
-explore: users__pivot_without_measure_name {}
+explore: users__pivot_without_measure_name {
+  join: order_items {
+    sql_on: ${order_items.user_id}=${users__pivot_without_measure_name.id} ;;
+    type: left_outer
+    relationship: one_to_many
+  }
+}
