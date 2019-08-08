@@ -29,6 +29,7 @@ explore: users {
     required_access_grants: [restricted_data_access]
     sql_on: ${users.id}=${users_id_to_name_lookup.id} ;;
     type: inner
+    # type: left_outer_each
     relationship: one_to_one
   }
 
