@@ -287,3 +287,30 @@ view: liquid_nulls_test {
 }
 
 explore: liquid_nulls_test {}
+
+view: b1 {
+  extends:[basic_users]
+  dimension: in_query_check {
+    sql: '{{basic_users2._is_selected}}' ;;
+  }
+}
+include: "basic_users.view"
+explore: b1 {
+  join: basic_users2 {
+    from: basic_users
+    sql_on: ${b1.id}=${basic_users2.id} ;;
+    type: left_outer
+    relationship: one_to_one
+  }
+}
+
+
+
+
+view: parse_integer {
+  extends: [basic_users]
+  dimension: id_and_name_concat {sql: ${id} || '__' || ${last_name} ;;}
+  parameter: param_entry {suggest_dimension: id_and_name_concat}
+  dimension: parsed_id{sql: {{param_entry._parameter_value | split: '__' | first | replace_first: "'", "" }};;}
+}
+explore: parse_integer {}
