@@ -14,6 +14,7 @@ view: survey_percent_responses_example {
   measure: percent_of_responses_to_question {
     type: number
     sql: ${response_count}/${total_responses_to_question} ;;
+    value_format_name: percent_0
   }
 }
 
