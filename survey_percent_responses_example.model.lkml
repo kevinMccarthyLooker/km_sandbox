@@ -6,6 +6,14 @@ view: survey_percent_responses_example {
   dimension: respondent_name {}
   dimension: question {}
   dimension: answer {}
+  dimension: gender {
+    case: {
+      when: {label:"female" sql:${respondent_name}='Miley Cyrus';;}
+      when: {label:"female" sql:${respondent_name}='Kesha';;}
+      when: {label:"female" sql:${respondent_name}='Mother Theresa';;}
+      else: "male"
+    }
+  }
   measure: response_count {type:count}
   measure: total_responses_to_question {
     type: number
