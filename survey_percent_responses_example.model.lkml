@@ -8,10 +8,15 @@ view: survey_percent_responses_example {
   dimension: answer {}
   dimension: gender {
     case: {
-      when: {label:"female" sql:${respondent_name}='Miley Cyrus';;}
-      when: {label:"female" sql:${respondent_name}='Kesha';;}
-      when: {label:"female" sql:${respondent_name}='Mother Theresa';;}
+      when: {label:"female" sql:${respondent_name} in ('Miley Cyrus','Kesha','Mother Theresa');;}
       else: "male"
+    }
+  }
+  dimension: is_living {
+    #used case because... type yesno didn't seem to get handled properly in the partition liquid...
+    case: {
+      when: {label: "Yes" sql: ${respondent_name} in ('Miley Cyrus','Kesha','Bob Dole');;}
+      else: "No"
     }
   }
   measure: response_count {type:count}
@@ -36,7 +41,8 @@ view: survey_percent_responses_example {
     {%if question._is_selected %}${question},{%endif%}
     --${answer}
     {%if gender._is_selected %}${gender},{%endif%}
-    1
+    {%if is_living._is_selected%}${is_living},{%endif%}
+    1--so there's not an error from a trailing comma
     ) ;;
   }
   measure: percent_of_responses_by_this_group_that_have_this_answer{
