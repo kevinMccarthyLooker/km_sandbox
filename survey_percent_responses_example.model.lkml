@@ -9,7 +9,7 @@ view: survey_percent_responses_example {
   measure: response_count {type:count}
   measure: total_responses_to_question {
     type: number
-    sql: sum(count(*)) over(partition by ${question}) ;;
+    sql: sum(count(*)) over(partition by ${question},${answer}) ;;
   }
   measure: percent_of_responses_to_question {
     type: number
