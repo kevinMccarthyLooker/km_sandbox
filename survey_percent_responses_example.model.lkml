@@ -15,13 +15,13 @@ view: survey_percent_responses_example {
     }
   }
   measure: response_count {type:count}
-  measure: total_responses_to_question {
+  measure: total_responses_with_this_answer_to_this_question {
     type: number
     sql: sum(count(*)) over(partition by ${question},${answer}) ;;
   }
   measure: percent_of_responses_to_question {
     type: number
-    sql: ${response_count}/${total_responses_to_question} ;;
+    sql: ${response_count}/${total_responses_with_this_answer_to_this_question} ;;
     value_format_name: percent_0
   }
 }
