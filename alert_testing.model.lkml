@@ -44,15 +44,17 @@ explore: pdt_create_syntax_check {}
 
 view: manually_update_trigger {
   derived_table: {
-    sql_create:
-update profservices_scratch.aaa_trigger_max set trigger_value =
-  (select trigger_value from profservices_scratch.aaa_trigger_max)
-  +
-  case when
-    select count(*) from public.users > 10000 and
-    case when extract(minute from now()) <= 5 then true else false end
-  then 1 else 0 end
-;;
+    create_process: {
+      sql_step:
+        update profservices_scratch.aaa_trigger_max set trigger_value =
+          (select trigger_value from profservices_scratch.aaa_trigger_max)
+          +
+          case when
+            (select count(*) from public.users) > 10000
+          then 1 else 0 end;;
+      sql_step:
+        CREATE TABLE ${SQL_TABLE_NAME} as select * from profservices_scratch.aaa_trigger_max;;
+}
   sql_trigger_value: select now() ;;
   }
   dimension: trigger_value {}
