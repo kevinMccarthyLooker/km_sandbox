@@ -53,6 +53,8 @@ update profservices_scratch.aaa_trigger_max set trigger_value =
     case when extract(minute from now()) <= 5 then true else false end
   then 1 else 0 end
 ;;
+  persist_for: "0 minutes"
+  distribution_style: all
   }
   dimension: trigger_value {}
 }
