@@ -50,6 +50,7 @@ view: survey_percent_responses_example {
     sql: ${response_count}/${total_responses_to_this_question_by_this_group__any_answer} ;;
     value_format_name: percent_0
   }
+
 }
 
 explore: survey_percent_responses_example {}
