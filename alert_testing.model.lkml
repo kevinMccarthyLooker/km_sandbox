@@ -53,11 +53,12 @@ update profservices_scratch.aaa_trigger_max set trigger_value =
     case when extract(minute from now()) <= 5 then true else false end
   then 1 else 0 end
 ;;
-  persist_for: "0 minutes"
-  distribution_style: all
+  sql_trigger_value: select now() ;;
   }
   dimension: trigger_value {}
 }
+
+explore: manually_update_trigger {}
 
 datagroup: alert_testing_manual_trigger_checker {
   sql_trigger: select trigger_value from  profservices_scratch.aaa_trigger_max;;
