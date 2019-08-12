@@ -63,11 +63,14 @@ datagroup: alert_testing_manual_trigger_checker {
 
 view: view_triggered_by_custom_trigger {
   derived_table: {
-    sql:select age,count(*) from public.users group by age;;
+    sql:select age,count(*) as the_count from public.users group by age;;
     datagroup_trigger: alert_testing_manual_trigger_checker
     distribution_style: all
     indexes: ["age"]
   }
+  dimension: age {type:number}
+  dimension: the_count {type:number}
+  measure: total_count {type:sum sql:${the_count};;}
 }
 
 explore: view_triggered_by_custom_trigger {}
