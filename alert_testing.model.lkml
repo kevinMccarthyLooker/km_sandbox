@@ -44,14 +44,15 @@ view: manually_update_trigger {
   derived_table: {
     create_process: {
       sql_step:
-        update profservices_scratch.aaa_trigger_max set trigger_value =
-          (select trigger_value from profservices_scratch.aaa_trigger_max)
-          +
+        update profservices_scratch.aaa_trigger_max
+        set trigger_value = trigger_value +
           case when
-            (select count(*) from public.users) > 10000 /*custom trigger logic*/
-            --and extract(minute from GETDATE())<=5 /*custom timing control*/
+          /*custom trigger logic*/
+            (select count(*) from public.users) > 10000
+          /*end custom trigger logic*/
           then 1 else 0 end;;
       sql_step:
+        /*not actually using this...*/
         CREATE TABLE ${SQL_TABLE_NAME} as select * from profservices_scratch.aaa_trigger_max;;
     }
 #   sql_trigger_value: select now() ;;#run the update query every 5 minutes
