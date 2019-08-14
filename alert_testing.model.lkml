@@ -1,8 +1,30 @@
 connection: "thelook_events_redshift"
 
 include: "basic_users.view"
+include: "order_items.view"
+explore: alert_testing {
+  from: basic_users
+  view_name: users
+  join: order_items {
+    sql_on: ${users.id}=${order_items.user_id} ;;
+    relationship: one_to_many
+    type: left_outer
+  }
+}
 
-explore: basic_users {}
+view: trigger_ndt {
+  derived_table: {
+    explore_source: alert_testing {
+      column: order_id {field:order_items.order_id}
+      column: created_raw {field:order_items.created_raw}
+      sort: {field:order_items.created_date desc:yes}
+      filters: {field:order_items.created_date value:"before 10 days ago"}
+    }
+  }
+  dimension: order_id {}
+  dimension: created_raw {}
+}
+explore: trigger_ndt {}
 
 # datagroup: alert_trigger_test1__outlier_on_count_by_age{
 #   sql_trigger:

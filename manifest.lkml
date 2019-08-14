@@ -6,6 +6,10 @@ localization_settings: {
   default_locale: en
 }
 
+constant: owner {
+  value: "{% if _explore._name == 'users__constants' %} 'Matched' {% else %} Default Placeholder{%endif%}"
+  }
+
 constant: test_constant {
   value: "02349_sfo"
 }
