@@ -2,7 +2,9 @@ connection: "thelook_events_redshift"
 
 include: "basic_users.view"
 include: "merge_filter_example.dashboard"
-explore: basic_users {}
+explore: basic_users {
+  persist_with: test_datagroup
+}
 
 datagroup: test_datagroup {
   sql_trigger: select 1 ;;
