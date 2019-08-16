@@ -8,4 +8,5 @@ explore: basic_users {
 
 datagroup: test_datagroup {
   sql_trigger: select count(*) from public.users ;;
+  max_cache_age: "24 hours"
 }
