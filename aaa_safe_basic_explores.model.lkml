@@ -7,5 +7,5 @@ explore: basic_users {
 }
 
 datagroup: test_datagroup {
-  sql_trigger: select 1 ;;
+  sql_trigger: select count(*) from public.users ;;
 }
