@@ -1,10 +1,10 @@
 project_name: "km_sandbox"
 
-localization_settings: {
-  # localization_level: [strict | permissive]
-  localization_level: permissive
-  default_locale: en
-}
+# localization_settings: {
+#   # localization_level: [strict | permissive]
+#   localization_level: permissive
+#   default_locale: en
+# }
 
 constant: owner {
   value: "{% if _explore._name == 'users__constants' %} 'Matched' {% else %} Default Placeholder{%endif%}"

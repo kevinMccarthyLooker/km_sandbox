@@ -5,8 +5,9 @@ include: "basic_users.view"
 view: users__constants {
   extends: [basic_users]
   dimension: x {
+    label: "@{owner}"
     sql: @{owner} ;;
-#     sql: {{ _explore._name}} ;;
   }
 }
 explore: users__constants {}
+explore: BAD {from:users__constants}
