@@ -14,4 +14,15 @@ explore: join_with_different_table_name_def_base {
     sql_on: ${join_with_different_table_name_def_base.id}=${another_version.id} ;;
     relationship: one_to_one
   }
+
+
+  join: another__even_simpler {
+    from: join_with_different_table_name_def_base
+    sql_on:
+${join_with_different_table_name_def_base.id}=${another__even_simpler.id}
+and ${another__even_simpler.age} =30
+    ;;
+    relationship: one_to_one
+  }
+
 }
