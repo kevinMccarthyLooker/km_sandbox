@@ -8,7 +8,7 @@ view: users__date_start_sql_table_name {
   (select * from public.users
   where
   created_at>
-  {% date_start users__date_start_sql_table_name.created_special %}
+  coalesce({% date_start users__date_start_sql_table_name.created_special %},'1900-01-01')
   );;
   dimension: created_special {
     type: date
