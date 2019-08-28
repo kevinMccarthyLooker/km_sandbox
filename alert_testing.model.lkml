@@ -89,6 +89,14 @@ datagroup: alert_testing_manual_trigger_checker {
   sql_trigger: select trigger_value from  profservices_scratch.aaa_trigger_max;;
 }
 
+datagroup: update_a_log_via_datagroup{
+  sql_trigger:
+insert into profservices_scratch.special_trigger_test1 (
+select 2 as id, getdate() as log_date, 102 as value where 1=1
+);
+  ;;
+}
+
 view: view_triggered_by_custom_trigger {
   derived_table: {
     sql:select GETDATE(),age,count(*) as the_count from public.users group by 1,2;;
