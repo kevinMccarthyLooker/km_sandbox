@@ -18,6 +18,9 @@ constant: constant__now {
   value: "{{'now' | date: '%Y'}}"
 }
 
+constant: format_as_integer {value: "{{ value | round }}"}
+
+constant: format_as_round_to_10s {value: "{{ value | round:1 }}"}
 
 constant: camelize {
   value:
