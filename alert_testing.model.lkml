@@ -92,8 +92,8 @@ datagroup: alert_testing_manual_trigger_checker {
 datagroup: update_a_log_via_datagroup{
   sql_trigger:
 insert into profservices_scratch.special_trigger_test1 (
-select 2 as id, getdate() as log_date, 102 as value where 1=1
-);
+select (select max(id) from profservices_scratch.special_trigger_test1)+1 as id, getdate() as log_date, 102 as value where (select age from public.users group by 1 having count(*)>10 limit 1)
+)
   ;;
 }
 
