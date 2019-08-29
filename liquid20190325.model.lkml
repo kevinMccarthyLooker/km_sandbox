@@ -152,6 +152,22 @@ view: users_view {
     timeframes: [raw,date,day_of_year,month_num,day_of_month,week_of_year,month]
     sql: getdate() ;;
   }
+
+  dimension_group: now_liquid {
+    datatype: timestamp
+    type: time
+    timeframes: [raw,date,day_of_year,month_num,day_of_month,week_of_year,month]
+    sql:
+    {% assign minute = "now" | date: "%Y%m%d%H%M" %}
+    {% assign ten_minutes = minute | modulo: 10 %}
+    {%if ten_minutes <= 5 %}
+      select {{ten_minutes}}
+    {%else %}
+      select 11
+    {% endif %}
+    ;;
+  }
+
   dimension: days_since_joined {
     type: duration_day
     sql_start:  ${created_date};;

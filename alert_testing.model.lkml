@@ -97,6 +97,18 @@ datagroup: alert_testing_manual_trigger_checker {
 datagroup: step_1_master_trigger {
   sql_trigger: select floor(datediff(minute,'1999-12-31 00:00:00',getdate())/10) as ten_minute_intervals_since_2000 ;;
 }
+datagroup: step_1_master_trigger_liquid_test {
+  sql_trigger:
+    {% assign minute = "now" | date: "%Y%m%d%H%M" %}
+    {% assign ten_minutes = minute | modulo: 10 %}
+    {%if ten_minutes <= 5 %}
+      select {{ten_minutes}}
+    {%else %}
+      select 11
+    {% endif %}
+    ;;
+}
+
 
 #step 2
 
