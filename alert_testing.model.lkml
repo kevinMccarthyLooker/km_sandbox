@@ -89,6 +89,17 @@ datagroup: alert_testing_manual_trigger_checker {
   sql_trigger: select trigger_value from  profservices_scratch.aaa_trigger_max;;
 }
 
+#step 1
+#Goals: likely want some control so we don't run the main (potentially expensive) query every 5 mins
+#Ideal: Like the common datagroup example, ideally an etl log table update... since data cant have changed otherwise
+#This example: Every 10 minutes
+#Questions: Can this use liquid?
+datagroup: step_1_master_trigger {
+  sql_trigger: select floor(datediff(minute,'1999-12-31 00:00:00',getdate())/10) as ten_minute_intervals_since_2000 ;;
+}
+
+#step 2
+
 datagroup: update_a_log_via_datagroup{
   sql_trigger:
 insert into profservices_scratch.special_trigger_test1 (
