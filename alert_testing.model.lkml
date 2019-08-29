@@ -123,7 +123,8 @@ select (select max(id) from profservices_scratch.special_trigger_test1)+1 as id,
 view: view_triggered_by_custom_trigger {
   derived_table: {
     sql:select GETDATE(),age,count(*) as the_count from public.users group by 1,2;;
-    datagroup_trigger: alert_testing_manual_trigger_checker
+    # datagroup_trigger: alert_testing_manual_trigger_checker
+    persist_for: "5000 minutes"
     distribution_style: all
     indexes: ["age"]
   }
