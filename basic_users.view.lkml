@@ -22,4 +22,5 @@ view: basic_users {
   dimension: traffic_source {}
   dimension: zip {type: zipcode}
   measure: count {type:count}
+  measure: count2 {type:count }
 }
