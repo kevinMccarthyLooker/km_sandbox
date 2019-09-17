@@ -8,6 +8,12 @@ view: users__constants {
     label: "@{owner}"
     sql: @{owner} ;;
   }
+
+
+  dimension: y {
+    sql:
+    @{trim_quotes_begin}@{test_var}@{trim_quotes_end} ;;
+  }
 }
 explore: users__constants {}
 explore: BAD {from:users__constants}

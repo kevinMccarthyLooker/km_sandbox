@@ -6,6 +6,18 @@ project_name: "km_sandbox"
 #   default_locale: en
 # }
 
+#can 'capture' inputs like this and use them in comples
+constant: trim_quotes_begin {
+  value: "{% assign trim_quotes_input = "
+}
+constant: trim_quotes_end {
+  value: "%}{% assign trim_quotes_input_size = trim_quotes_input | size | minus:2 %}{{trim_quotes_input | slice: 1 , trim_quotes_input_size }}"
+  # value: "%}{% assign trim_quotes_input_size = 2 %}{{trim_quotes_input | slice: 1 , trim_quotes_input_size }}"
+}
+constant: test_var {
+  value: "'testing abc'"
+}
+
 constant: owner {
   value: "{% if _explore._name == 'users__constants' %} 'Matched' {% else %} Default Placeholder{%endif%}"
   }
