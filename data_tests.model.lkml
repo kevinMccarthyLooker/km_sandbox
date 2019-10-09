@@ -33,13 +33,19 @@ view: users_for_data_tests {
     sql: {{ "now" | date: "%Y" }} ;;
   }
 }
-
-explore: users_for_data_tests {}
+include: "order_items.*"
+explore: users_for_data_tests {
+  join: order_items {
+    sql_on: ${order_items.user_id}=${users_for_data_tests.id} ;;
+    relationship: one_to_many
+  }
+}
 
 test: test_there_are_users {
   explore_source: users_for_data_tests {
     column: age {}
-    column: count {}
+    column: count {field:users_for_data_tests.count}
+    column: count_order_items {field:order_items.count}
     column: sum_age {}
   }
   # assert: there_is_data {
@@ -64,4 +70,11 @@ test: test_there_are_users {
   # assert: liquid_test {
   #   expression: ${users_for_data_tests.age} > {{ "now" | date: "%Y" }} ;;
   # }
+
+  assert: count_users_greater_than_0 {
+    expression: ${users_for_data_tests.count}>0;;
+  }
+  assert: count_items_greater_than_0 {
+    expression: ${order_items.count}>0;;
+  }
 }
