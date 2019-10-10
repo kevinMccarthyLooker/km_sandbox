@@ -17,9 +17,26 @@ view: users_liquid {
     }
   }
 
+  parameter: color_threshold {
+    type: number
+  }
+  dimension: color_test {
+    type: number
+    sql: ${TABLE}.age ;;
+    html:
+    {% assign color_threshold_as_number = color_threshold._parameter_value | times:1.0 %}
+    <div style="background-color:
+      {% if value >= color_threshold_as_number %}green
+      {% else %}red
+      {%endif%}
+    ">{{value}}</div>
+    ;;
+  }
+
+
   dimension: a_field_for_filtering{sql:'test';;}
   dimension: parameters_value {
-    sql: {% condition a_field_for_filtering %}''{%endcondition%} ;;
+    sql: {% condition a_field_for_filtering %}sometest{%endcondition%} ;;
   }
 
   measure: dynamic_metric {
@@ -55,6 +72,19 @@ view: users_liquid {
     sql: 1 ;;
     html: {{count._link}} ;;
   }
+
+  dimension: list_of_values {
+    sql: 'v1,v2' ;;
+    html:
+{% assign my_array = value | split: ',' %}
+{% for my_array_element in my_array %}
+  this element: {{my_array_element}}
+{% endfor %}
+    ;;
+
+  }
+
+
 }
 
 
