@@ -2,6 +2,8 @@ connection: "thelook_events_redshift"
 
 include: "basic_users.view"
 # include: "merge_filter_example.dashboard"
+
+include: "test_thin*"
 explore: basic_users {
   # persist_with: test_datagroup
 }
@@ -20,3 +22,16 @@ explore: users_with_running_total {}
 #   sql_trigger: select count(*) from public.users ;;
 #   max_cache_age: "24 hours"
 # }
+include: "order_items.*"
+explore: order_items {
+  join: users {
+    from: basic_users
+    sql_on: ${users.id}=${order_items.user_id} ;;
+    relationship: many_to_one
+  }
+}
+
+explore: basic_users_x {
+  from: basic_users
+  sql_always_where: {{_user_attributes['name']}} ;;
+}
