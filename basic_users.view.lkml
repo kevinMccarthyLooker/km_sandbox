@@ -19,7 +19,7 @@ view: basic_users {
   dimension: last_name {}
   dimension: latitude {type: number}
   dimension: longitude {type: number}
-  dimension: state {}
+  dimension: state {map_layer_name:us_states}
   dimension: traffic_source {}
   dimension: zip {type: zipcode}
   measure: count {type:count

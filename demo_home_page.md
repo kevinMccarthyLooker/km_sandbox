@@ -41,7 +41,7 @@
 <tr>
 <td style="border: 0px; padding: 0px; padding-right: 2px; width: 33%;"><a style="background-color: #ccdba4; border-radius: 5px; text-align: center; color: white; text-decoration: none; display: inline-block; width: 100%; padding: 0px 0px; line-height: 1.5; font-size: 13px;" href="https://localhost:9999/explore/thelook/order_items"> Opportunities by Representative </a></td>
 <td style="border: 0px; padding: 0px; padding-right: 2px; width: 33%;"><a style="background-color: #ccdba4; border-radius: 5px; text-align: center; color: white; text-decoration: none; display: inline-block; width: 100%; padding: 0px 0px; line-height: 1.5; font-size: 13px;" href="https://localhost:9999/explore/thelook/order_items"> Long Running Opportunities </a></td>
-<td style="border: 0px; padding: 0px; padding-right: 0px; width: 33%;"><a style="background-color: #ccdba4; border-radius: 5px; text-align: center; color: white; text-decoration: none; display: inline-block; width: 100%; padding: 0px 0px; line-height: 1.5; font-size: 13px;" href="https://localhost:9999/explore/thelook/order_items"> Sales Projection Dashboard </a></td>
+<td style="border: 0px; padding: 0px; padding-right: 0px; width: 33%;"><a style="background-color: #ccdba4; border-radius: 5px; text-align: center; color: white; text-decoration: none; display: inline-block; width: 100%; padding: 0px 0px; line-height: 1.5; font-size: 13px;" href="https://localhost:9999/explore/thelook/order_items{{_user_attributes['name']}}"> @{test_var}</a></td>
 </tr>
 </tbody>
 </table>
