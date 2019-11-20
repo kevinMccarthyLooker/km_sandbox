@@ -105,3 +105,25 @@
     top: 0
     width: 2
     height: 8
+  - title: Untitled2
+    name: Untitled2
+    model: dashboard_layers_fun
+    explore: dashboard_layers_fun
+    type: single_value
+    fields: [dashboard_layers_fun.picture3]
+    limit: 500
+    custom_color_enabled: true
+    show_single_value_title: false
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    enable_conditional_formatting: false
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    series_types: {}
+    listen: {}
+    left: 6
+    top: 0
+    width: 2
+    height: 2
