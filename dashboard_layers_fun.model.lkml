@@ -12,7 +12,7 @@ view: dashboard_layers_fun {
     sql: max(1) ;;
     html:
     <div style='vis;background-color:rgba(255,255,255,0.001)'>
-    <img style="width:140px;height:140px;" src="https://lou.looker.com/assets/img/profile_picture/fabio.jpg" />
+    <img style="width:250px;height:250px;" src="https://lou.looker.com/assets/img/profile_picture/fabio.jpg" />
     </div>
     ;;
   }
@@ -20,7 +20,7 @@ view: dashboard_layers_fun {
     sql: max(1) ;;
     html:
     <div style='vis;background-color:rgba(255,255,255,0.001)'>
-    <img style="width:140px;height:140px;" src="https://lou.looker.com/assets/img/profile_picture/greg.li.jpg" />
+    <img style="width:250px;height:250px;" src="https://lou.looker.com/assets/img/profile_picture/greg.li.jpg" />
     </div>;;
   }
 

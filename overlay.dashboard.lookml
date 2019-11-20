@@ -66,7 +66,7 @@
     model: dashboard_layers_fun
     explore: dashboard_layers_fun
     type: single_value
-    fields: [dashboard_layers_fun.picture2]
+    fields: [dashboard_layers_fun.picture1]
     limit: 500
     custom_color_enabled: true
     show_single_value_title: false
@@ -88,7 +88,7 @@
     model: dashboard_layers_fun
     explore: dashboard_layers_fun
     type: single_value
-    fields: [dashboard_layers_fun.picture1]
+    fields: [dashboard_layers_fun.picture2]
     limit: 500
     custom_color_enabled: true
     show_single_value_title: false
