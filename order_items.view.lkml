@@ -198,6 +198,7 @@ view: order_items {
   measure: average_sale_price_lookml {
     type: average
     sql: ${sale_price} ;;
+    html: {{inventory_items.product_brand}} ;;
   }
 
   dimension_group: shipped {
@@ -242,6 +243,7 @@ view: order_items {
 #     }
     #idea is to dynamicall color these based on percent of total.  Relating to a question Mark was asking
 #     html:{% if count_percent_of_total._value > 1 %}{{ value }}{% else %}no-{{ count_percent_of_total._value }}{% endif %} ;;
+    html: {{inventory_items.product_brand}} ;;
   }
 
   measure: count_percent_of_total {
