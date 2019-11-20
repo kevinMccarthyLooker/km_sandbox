@@ -27,7 +27,7 @@
     model: dashboard_layers_fun
     explore: dashboard_layers_fun
     type: single_value
-    fields: [dashboard_layers_fun.count]
+    fields: [dashboard_layers_fun.picture1]
     limit: 500
     series_types: {}
     listen: {}
