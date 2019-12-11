@@ -11,8 +11,16 @@ view: basic_users {
     type: time
     timeframes: [raw,time,date,week,month,quarter,year]
     sql: ${TABLE}.created_at ;;
-    convert_tz: no
   }
+#   dimension: created_raw_visible {
+#     label: "Created Raw"
+#     group_label: "Created Date"
+#     group_item_label: "Raw"
+#     sql: ${created_raw} ;;
+#     datatype: datetime
+#     type: date_time
+#     convert_tz: no
+#   }
   dimension: email {}
   dimension: first_name {}
   dimension: gender {}

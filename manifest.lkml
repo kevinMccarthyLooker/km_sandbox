@@ -118,3 +118,52 @@ constant: viz_config_test {
       {{ link }}&vis_config={{ vis_config | encode_uri }}&toggle=dat,pik,vis&limit=5000"
 
 }
+
+constant: filter_field_to_filter_label_mappings {
+  value: "
+'
+liquid_drops.age,age_filter,
+liquid_drops.age,another_age_filter,
+liquid_drops.gender,sex
+'
+  "
+
+}
+
+constant: field_to_filter_name_mapping {
+ value: "
+
+{% assign original = input %}
+{% assign original_value = input | split: '=' | last %}
+{% assign original_field = input | split: '=' | first %}
+{% assign output = '' %}
+
+{% assign used_filter_labels =
+@{filter_field_to_filter_label_mappings}
+| strip_newlines | split: ',' %}
+{% assign used_filter_label_size = used_filter_labels | size %}
+
+{% for i in (0..used_filter_label_size) %}
+  {% assign i_mod = 0 %}
+  {% assign i_mod = i | modulo: 2 %}
+  {% if i_mod == 0 %}
+    {% if original_field == used_filter_labels[i] %}
+      {% assign next_index = i | plus:1 %}
+      {% assign renamed_field = used_filter_labels[next_index] %}
+      {% assign output = output | append: '&' | append: renamed_field | append:'=' | append: original_value %}
+    {% endif %}
+  {%endif%}
+{%endfor%}
+{% assign output = output | append: '&' | append: original_field | append:'=' | append: original_value %}
+
+"
+
+# {% for this_filter_label in used_filter_labels %}
+#   {% if original_field == this_filter_label %}
+#     {% assign renamed_field = 'age_filter' %}
+#     {% assign output = output | append: '&' | append: renamed_field | append:'=' | append: original_value %}
+#   {% endif %}
+# {% endfor %}
+
+# {% if original_field == 'liquid_drops.age' %}
+}
