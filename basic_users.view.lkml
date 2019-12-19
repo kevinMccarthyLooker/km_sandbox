@@ -41,4 +41,11 @@ view: basic_users {
 #     sql: ${count} ;;
 # #     direction: ""
 #   }
+
+# measure: count2 {
+#   type: count
+#   html: <script type="text/javascript">
+#   t document.getElementById("foo").setAttribute("href", _spPageContextInfo.siteAbsoluteUrl);
+# </script> ;;
+# }
 }

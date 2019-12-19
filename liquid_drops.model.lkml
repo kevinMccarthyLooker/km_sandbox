@@ -8,6 +8,11 @@ view: liquid_drops {
     sql: 'hi_hi''hi' ;;
   }
 
+  measure: full_reference_in_liquid {
+    type: number
+    sql: {% assign x = '${sum_age_to_be_used_hidden}' %}'{{ x | replace:"age","replaced"}}' ;;
+  }
+
   measure: filter_link {
     type: count_distinct
 #     hidden: yes
