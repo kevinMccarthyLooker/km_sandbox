@@ -30,10 +30,10 @@ view: grand_total {
       bind_all_filters: yes
     }
   }
-  dimension: total_total_responses {type:number}
+  dimension: total_total_responses {type:number primary_key:yes}
   measure: percent_of_grand_total_responses {
     type: number
-    sql: ${scott_percent_of_total_20200201.total_responses}*1.0/nullif(sum(${total_total_responses}),0) ;;
+    sql: ${scott_percent_of_total_20200201.total_responses}*1.0/nullif(${total_total_responses},0) ;;
     value_format_name: percent_1
   }
 }
