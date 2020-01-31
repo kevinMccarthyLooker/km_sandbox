@@ -33,7 +33,8 @@ view: grand_total {
   dimension: total_total_responses {type:number}
   measure: percent_of_grand_total_responses {
     type: number
-    sql: ${scott_percent_of_total_20200201.total_responses}/nullif(sum(${total_total_responses}),0) ;;
+    sql: ${scott_percent_of_total_20200201.total_responses}*1.0/nullif(sum(${total_total_responses}),0) ;;
+    value_format_name: percent_1
   }
 }
 
