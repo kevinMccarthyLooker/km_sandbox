@@ -11,6 +11,7 @@ explore: basic_users {
 view: users_with_running_total {
   extends: [basic_users]
   measure: running_total {
+    description: "{% if _user_attributes['first_name'] =='Kevin' %}hi kevin{% else%}{{_user_attributes['first_name']}}{%endif%}"
     direction: "column"
     type: running_total
     sql: ${count} ;;
