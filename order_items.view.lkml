@@ -243,7 +243,7 @@ view: order_items {
 #     }
     #idea is to dynamicall color these based on percent of total.  Relating to a question Mark was asking
 #     html:{% if count_percent_of_total._value > 1 %}{{ value }}{% else %}no-{{ count_percent_of_total._value }}{% endif %} ;;
-    html: {{inventory_items.product_brand}} ;;
+#     html: {{inventory_items.product_brand}} ;;
   }
 
   measure: count_percent_of_total {
