@@ -15,6 +15,7 @@ explore: base_explore {from: order_items__base_for_NDT_physicalize_for_a_tile
     relationship: many_to_one
     sql_on: ${order_items.user_id}=${users.id} ;;
   }
+
 }
 
 ###########
@@ -31,6 +32,7 @@ view: tile_example_1_ndt {
     datagroup_trigger: default_datagroup
     distribution_style: "even" #not yet sure if this should be all or what for optimization in this case
     sortkeys: ["status"]
+
   }
   dimension: status {}
   #measures must be manually re-aggregated and watch out for name collisions

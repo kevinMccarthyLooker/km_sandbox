@@ -1,7 +1,7 @@
 view: basic_users {
   sql_table_name: public.users ;;
+  dimension: primary_key {primary_key: yes sql:${id};;}
   dimension: id {
-    primary_key: yes
     type: number
   }
   dimension: age {type: number}
@@ -30,7 +30,10 @@ view: basic_users {
   dimension: state {map_layer_name:us_states}
   dimension: traffic_source {}
   dimension: zip {type: zipcode}
-  measure: count {type:count
+  measure: count2 {type:count}
+  measure: count {
+    label: "Count Users"
+    type:count
 #     html:
 #     {% if count_percent_of_previous._value > 0.5 %}high{%else%}low{%endif%}{{value}} ;;
 # #     html: {% if users.count_percent_of_previous._rendered_value > 0.5 %}high{%else%}low{%endif%} ;;
@@ -47,8 +50,22 @@ view: basic_users {
 #   html: <script type="text/javascript">
 #   t document.getElementById("foo").setAttribute("href", _spPageContextInfo.siteAbsoluteUrl);
 # </script> ;;
+drill_fields: [id]
 # }
+
+  measure: date_measure {
+    type: date
+    sql: ${created_raw} ;;
+  }
+  measure: date_max {
+    type: date
+#     filters: {field:gender value:"Male"}
+    sql: max(${created_raw}) ;;
+
+  }
+  measure: date_measure2 {
+    type: date
+    sql: ${date_max} ;;
+  }
+
 }
-
-
-

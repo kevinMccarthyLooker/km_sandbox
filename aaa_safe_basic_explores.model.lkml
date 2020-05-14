@@ -42,7 +42,15 @@ explore: basic_users_x {
   sql_always_where: {{_user_attributes['name']}} ;;
 }
 
-
+view: date_test {
+  extends: [basic_users]
+  dimension: my_date {
+    type: date
+    datatype: epoch
+    sql: '2099-01-01'::date ;;
+  }
+}
+explore: date_test {}
 
 
 include: "overlay.dashboard"
