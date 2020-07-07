@@ -6,6 +6,9 @@ view: basic_users {
   }
   dimension: age {type: number}
   dimension: city {}
+  dimension: city_with_comma {
+    sql: concat(${city},',') ;;
+  }
   dimension: country {map_layer_name: countries}
   dimension_group: created {
     type: time
@@ -66,6 +69,24 @@ drill_fields: [id]
   measure: date_measure2 {
     type: date
     sql: ${date_max} ;;
+  }
+  dimension: date_as_string {
+    sql: ${TABLE}.created_at ;;
+  }
+  dimension: val {
+    sql: '1' ;;
+#     html: {{date_as_string._value}} ;;
+    html:
+    date_as_string:{{date_as_string._value}}
+    {% assign yesterday_var = date_as_string._value  | date: "%d" %}
+    {{yesterday_var}}
+    {% assign max_date_var = date_as_string._value | date: "%d" %}
+    {{max_date_var}}
+    {% if max_date_var == yesterday_var %}
+t
+    {% else %}
+t2
+    {% endif %};;
   }
 
 }

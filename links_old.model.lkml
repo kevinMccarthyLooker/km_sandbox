@@ -25,11 +25,12 @@ view: users__links
   dimension: id {primary_key:yes}
   dimension: age {
     # html: {{ drill_holder._link }} ;;
-    # html: <a href="#drillmenu" target="_self"> ;;
+    html: <a href="#drillmenu" target="_self">linky</a> ;;
+#     action: {label:"test"}
     drill_fields: [id,age]
-html: <a href="{{ link }}">
-<img border="0" src={% if value == 20 %}"https://github.com/MonuJain27/Images/blob/master/Green.jpg?raw=true"{% else %}"https://github.com/MonuJain27/Images/blob/master/Red.jpg?raw=true"{% endif %} width="100" height="100">
-</a> ;;
+# html: <a href="{{ link }}">
+# <img border="0" src={% if value == 20 %}"https://github.com/MonuJain27/Images/blob/master/Green.jpg?raw=true"{% else %}"https://github.com/MonuJain27/Images/blob/master/Red.jpg?raw=true"{% endif %} width="100" height="100">
+# </a> ;;
   }
   measure: count {
     type: count
