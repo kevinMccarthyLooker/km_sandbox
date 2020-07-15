@@ -1,4 +1,31 @@
 view: basic_users {
+
+  dimension: special_case_when_for_city {
+    case: {
+      when: {sql:${city}='Boston';; label:"AAwesome"}
+      when: {sql:${city}='New York';; label:"AAwesome"}
+      else: "{{city_sql_holder._sql}}"
+    }
+  }
+
+  dimension: city_sql_holder {
+    sql: ' || {{city._sql}} || ';;
+  }
+
+  parameter: multy_contains {}
+
+  dimension: multy_contains_result {
+    type: yesno
+    sql: ${city} like {{multy_contains._parameter_value}} ;;
+  }
+
+
+
+
+
+
+
+
   sql_table_name: public.users ;;
   dimension: primary_key {primary_key: yes sql:${id};;}
   dimension: id {
@@ -32,7 +59,9 @@ view: basic_users {
   dimension: longitude {type: number}
   dimension: state {map_layer_name:us_states}
   dimension: traffic_source {}
-  dimension: zip {type: zipcode}
+  dimension: zip {type: zipcode
+    html: {{rendered_value}} || {{city._rendere_value}};;
+    }
   measure: count2 {type:count}
   measure: count {
     label: "Count Users"
@@ -89,4 +118,15 @@ t2
     {% endif %};;
   }
 
+}
+
+
+view: +basic_users {
+  dimension: special_case_when_for_city {
+    case: {
+      when: {sql:${city}='Seattle';; label:"AAwesome"}
+      when: {sql:${city}='Atlanta';; label:"AAwesome"}
+      else: "{{city_sql_holder._sql}}"
+    }
+  }
 }
