@@ -121,16 +121,16 @@ include:"create_users_data.view.lkml"
 explore: create_users_data {}
 include: "order_items.view"
 include: "users.view"
-explore: order_items2 {
-  view_name: order_items
-  join: functions               {fields:[]                    sql:;;relationship:one_to_one}
-always_join: [users]
-join: users {
-  sql_on: ${order_items.user_id}=${users.id} ;;
-  relationship: many_to_one
-}
+# explore: order_items2 {
+#   view_name: order_items
+#   join: functions               {fields:[]                    sql:;;relationship:one_to_one}
+# always_join: [users]
+# join: users {
+#   sql_on: ${order_items.user_id}=${users.id} ;;
+#   relationship: many_to_one
+# }
 
-}
+# }
 include: "summary_measures.view"
 include: "variables_and_templates.view"
 # explore: users_summary_measures {
@@ -142,7 +142,7 @@ explore: users {
   join: variables_and_templates {                                                     sql:;;relationship:one_to_one}
 join: demo_summary_measures   {from:summary_measures                                sql:;;relationship:one_to_one fields:[gender_summary,age_summary,full_name_summary]}
 join: city_summary_measures   {from:summary_measures                                sql:;;relationship:one_to_one fields:[city_summary]}
-join: functions               {fields:[function_add,safe_divide]                    sql:;;relationship:one_to_one}
+# join: functions               {fields:[function_add,safe_divide]                    sql:;;relationship:one_to_one}
 join: order_items             {relationship:one_to_one           type:left_outer   sql_on: ${order_items.user_id}=${users.id} ;;}
 
 #seeing how easy it is to implement friendly custom filters.  not too hard but ugly with timezones and whatnot.
@@ -178,14 +178,14 @@ join: order_items             {relationship:one_to_one           type:left_outer
 }
 
 
-explore: functions_explore {
-  view_name: functions2
-  from: functions
-  join: function_use {sql:;; relationship:one_to_one}
-  join: field_for_extending {from:field_for_extending sql:;;relationship:one_to_one
-    view_label: "Function Use"
-  }
-}
+# explore: functions_explore {
+#   view_name: functions2
+#   from: functions
+#   join: function_use {sql:;; relationship:one_to_one}
+#   join: field_for_extending {from:field_for_extending sql:;;relationship:one_to_one
+#     view_label: "Function Use"
+#   }
+# }
 
 
 include: "gender_user_dt.view.lkml"

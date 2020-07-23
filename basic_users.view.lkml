@@ -29,4 +29,5 @@ view: basic_users {
   }
 
   drill_fields: [id]
+
 }

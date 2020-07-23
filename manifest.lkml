@@ -167,3 +167,5 @@ constant: field_to_filter_name_mapping {
 
 # {% if original_field == 'liquid_drops.age' %}
 }
+
+constant: my_base_field_for_financial_calendar {value: "${created_raw}"}
