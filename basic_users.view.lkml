@@ -39,6 +39,16 @@ view: basic_users {
   }
 
 #   drill_fields: [id]
+dimension: testp {}
+parameter: city_2 {
+  view_label: "why"
+  hidden: no
+  type: string
+  allowed_value: {value:"1"}
+}
+filter: city_3 {
+  view_label: "why"
+}
 
 }
 
